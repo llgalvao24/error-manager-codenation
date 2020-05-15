@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -28,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   // add here the endpoits that can be accessed without authentication
   private static final String[] PUBLIC_MATCHERS = {
       "/h2-console/**",
+      "/api/v1/**"
   };
 
   // add here the endpoits that can be accessed without authentication for reading
@@ -38,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
+    // it allows h2 to work in test env
     if(Arrays.asList(env.getActiveProfiles()).contains("test")) {
       http.headers().frameOptions().disable();
     }
@@ -54,5 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
     return source;
+  }
+
+  @Bean
+  public BCryptPasswordEncoder bCryptPasswordEncoder(){
+    return new BCryptPasswordEncoder();
   }
 }

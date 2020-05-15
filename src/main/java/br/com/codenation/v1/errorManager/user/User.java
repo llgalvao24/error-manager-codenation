@@ -1,6 +1,8 @@
 package br.com.codenation.v1.errorManager.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,12 +17,15 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User implements Serializable {
+
+  private static final Long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +39,7 @@ public class User {
 
   @NotNull
   @Size(max = 64)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
 
   @CreatedDate
