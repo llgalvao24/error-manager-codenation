@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -23,6 +25,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,7 +33,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
   private static final Long serialVersionUID = 1L;
 
@@ -65,11 +68,17 @@ public class User implements Serializable {
 
   public User() {
     addProfile(Profile.USER);
+    addProfile(Profile.ADMIN);
   }
 
   public User(String email, String password){
     this.email = email;
     this.password = password;
+  }
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return null;
   }
 
   public Long getId() {
@@ -80,7 +89,8 @@ public class User implements Serializable {
     this.id = id;
   }
 
-  public String getEmail() {
+  @Override
+  public String getUsername() {
     return email;
   }
 
@@ -104,6 +114,26 @@ public class User implements Serializable {
 
   public void addProfile(Profile profile) {
     profiles.add(profile.getCode());
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 
   @Override
