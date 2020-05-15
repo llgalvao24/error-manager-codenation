@@ -1,5 +1,6 @@
 package br.com.codenation.v1.errorManager.user;
 
+import br.com.codenation.v1.errorManager.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,9 +8,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +23,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -52,7 +59,12 @@ public class User implements Serializable {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "PROFILES")
+  private Set<Integer> profiles = new HashSet<>();
+
   public User() {
+    addProfile(Profile.USER);
   }
 
   public User(String email, String password){
@@ -82,6 +94,16 @@ public class User implements Serializable {
 
   public String getPassword() {
     return this.password;
+  }
+
+  public Set<Profile> getProfile() {
+    return profiles.stream()
+        .map(Profile::toEnum)
+        .collect(Collectors.toSet());
+  }
+
+  public void addProfile(Profile profile) {
+    profiles.add(profile.getCode());
   }
 
   @Override
