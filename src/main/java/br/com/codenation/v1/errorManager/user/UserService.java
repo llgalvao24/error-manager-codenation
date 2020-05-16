@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService  {
 
   @Autowired
   UserRepository userRepository;
@@ -25,17 +25,6 @@ public class UserService implements UserDetailsService {
   public User inset(User user){
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     userRepository.save(user);
-    return user;
-  }
-
-  @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    User user = userRepository.findByEmail(email);
-
-    if (user == null){
-      throw new UsernameNotFoundException(email);
-    }
-
     return user;
   }
 }

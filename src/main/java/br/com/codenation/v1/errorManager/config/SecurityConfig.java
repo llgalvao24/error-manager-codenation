@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private Environment env;
 
-  @Qualifier("userService")
+  @Qualifier("userDetailsServiceImpl")
   @Autowired
   private UserDetailsService userDetailsService;
 
