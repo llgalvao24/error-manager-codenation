@@ -15,16 +15,16 @@ import java.util.List;
 public class UserController {
 
   @Autowired
-  private UserRepository userRepository;
+  private UserService userService;
 
   @GetMapping("/users")
-  public List<User> getAllUsers(){
-    return userRepository.findAll();
+  public List<User> findAll(){
+    return userService.findAll();
   }
 
   @PostMapping("/user")
-  public User createUser(@Valid @RequestBody User user){
-    return userRepository.save(user);
+  public User insert(@Valid @RequestBody User user){
+    return userService.inset(user);
   }
 
 
