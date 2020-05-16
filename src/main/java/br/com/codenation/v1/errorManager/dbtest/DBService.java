@@ -1,5 +1,6 @@
 package br.com.codenation.v1.errorManager.dbtest;
 
+import br.com.codenation.v1.errorManager.enums.Profile;
 import br.com.codenation.v1.errorManager.user.User;
 import br.com.codenation.v1.errorManager.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class DBService {
   public void instantiateTestDatabase() {
 
     User user1 = new User("admin@admin.com", passwordEncoder.encode("admin"));
+    user1.addProfile(Profile.ADMIN);
     userRepository.save(user1);
   }
 }
