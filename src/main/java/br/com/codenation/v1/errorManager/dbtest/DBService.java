@@ -21,5 +21,8 @@ public class DBService {
     User user1 = new User("admin@admin.com", passwordEncoder.encode("admin"));
     user1.addProfile(Profile.ADMIN);
     userRepository.save(user1);
+
+    User user2 = new User("test@test.com", passwordEncoder.encode("test"));
+    userRepository.save(user2);
   }
 }
