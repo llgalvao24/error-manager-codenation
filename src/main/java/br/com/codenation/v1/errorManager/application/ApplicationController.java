@@ -16,19 +16,11 @@ import static org.springframework.http.HttpStatus.*;
 public class ApplicationController {
 
     @Autowired
-    ApplicationRepository applicationRepository;
-
-    @Autowired
     ApplicationService applicationService;
 
     @GetMapping
-    public List<Application> findApplications(Application filtro){
-        ExampleMatcher matcher = ExampleMatcher.matching()
-                                        .withIgnoreCase()
-                                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-        Example criteria = Example.of(filtro, matcher);
-
-        return applicationRepository.findAll(criteria);
+    public List<Application> findApplications(Application filtro) {
+        return applicationService.findApplications(filtro);
     }
 
     @PostMapping
@@ -40,11 +32,7 @@ public class ApplicationController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     public void deleteApplication(@PathVariable  Long id){
-        applicationRepository.findById(id)
-                            .map(a -> {
-                                applicationRepository.delete(a);
-                                return a;
-                            }).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Aplicação não encontrada."));
+        applicationService.deleteApplication(id);
     }
 
 

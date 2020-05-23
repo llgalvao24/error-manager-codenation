@@ -29,6 +29,9 @@ public class Application {
     @Column(name = "created_at", columnDefinition = "timestamp default now()")
     private LocalDateTime createdAt;
 
+    @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean isActive = true;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -58,6 +61,14 @@ public class Application {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public User getUser() {
