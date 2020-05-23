@@ -58,7 +58,7 @@ public class User {
     addProfile(Profile.USER);
   }
 
-  public User(String username, String password, Set<Profile> profiles) {
+  public User(String username, String password) {
     super();
     this.username = username;
     this.password = password;
