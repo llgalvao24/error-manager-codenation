@@ -1,6 +1,5 @@
 package br.com.codenation.v1.errorManager.user;
 
-import br.com.codenation.v1.errorManager.application.Application;
 import br.com.codenation.v1.errorManager.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,14 +7,21 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,6 +55,9 @@ public class User {
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
+
+  @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT TRUE")
+  private boolean isActive = true;
 
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "PROFILES")
@@ -87,6 +96,14 @@ public class User {
 
   public void setPassword(String password) {
     this.password= password;
+  }
+
+  public boolean isActive() {
+    return isActive;
+  }
+
+  public void setActive(boolean active) {
+    isActive = active;
   }
 
   public Set<Profile> getProfile() {

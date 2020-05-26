@@ -1,5 +1,7 @@
 package br.com.codenation.v1.errorManager.user;
 
+import br.com.codenation.v1.errorManager.application.ApplicationRepository;
+import br.com.codenation.v1.errorManager.exception.UserNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +18,9 @@ public class UserService  {
   UserRepository userRepository;
 
   @Autowired
+  ApplicationRepository applicationRepository;
+
+  @Autowired
   BCryptPasswordEncoder bCryptPasswordEncoder;
 
   public List<User> findAll() {
@@ -26,5 +31,13 @@ public class UserService  {
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     userRepository.save(user);
     return user;
+  }
+  public void delete(Long id){
+    userRepository.findById(id)
+                .map(u -> {
+                  u.setActive(false);
+                  userRepository.save(u);
+                  return u;
+                }).orElseThrow(() -> new UserNaoEncontradoException());
   }
 }

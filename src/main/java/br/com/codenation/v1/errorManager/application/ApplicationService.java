@@ -27,6 +27,7 @@ public class ApplicationService {
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
         Example criteria = Example.of(filtro, matcher);
 
         return applicationRepository.findAll(criteria);
