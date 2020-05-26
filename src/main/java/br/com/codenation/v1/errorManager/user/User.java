@@ -66,8 +66,9 @@ public class User {
     addProfile(Profile.USER);
   }
 
-  public User(String username, String password, Set<Profile> profiles) {
+  public User(Long id, String username, String password) {
     super();
+    this.id = id;
     this.username = username;
     this.password = password;
     addProfile(Profile.USER);
@@ -105,17 +106,6 @@ public class User {
 
   public void addProfile(Profile profile) {
     profiles.add(profile.getCode());
-  }
-
-  @Override
-  public String toString() {
-    return "User{" +
-        "id=" + id +
-        ", username='" + username + '\'' +
-        ", password='" + password + '\'' +
-        ", createdAt=" + createdAt +
-        ", updatedAt=" + updatedAt +
-        '}';
   }
 
   @Override
