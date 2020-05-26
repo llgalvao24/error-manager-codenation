@@ -1,6 +1,7 @@
 package br.com.codenation.v1.errorManager.config;
 
 import br.com.codenation.v1.errorManager.security.JWTAuthenticationFilter;
+import br.com.codenation.v1.errorManager.security.JWTAuthorizationFilter;
 import br.com.codenation.v1.errorManager.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -26,6 +28,7 @@ import java.util.Arrays;
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
@@ -41,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   // add here the endpoits that can be accessed without authentication
   private static final String[] PUBLIC_MATCHERS = {
       "/h2-console/**",
-      "/api/v1/**"
   };
 
   // add here the endpoits that can be accessed without authentication for reading
@@ -62,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
         .anyRequest().authenticated();
     http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+    http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 
