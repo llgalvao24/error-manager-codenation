@@ -59,7 +59,7 @@ public class User {
 
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "PROFILES")
-  private Set<Integer> profiles = new HashSet<>();
+  private final Set<Integer> profiles = new HashSet<>();
 
 
   public User() {
