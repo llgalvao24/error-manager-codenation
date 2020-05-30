@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -57,10 +56,12 @@ public class User {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
+  @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT TRUE")
+  private boolean isActive = true;
+
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "PROFILES")
   private Set<Integer> profiles = new HashSet<>();
-
 
   public User() {
     addProfile(Profile.USER);
@@ -95,6 +96,14 @@ public class User {
 
   public void setPassword(String password) {
     this.password= password;
+  }
+
+  public boolean isActive() {
+    return isActive;
+  }
+
+  public void setActive(boolean active) {
+    isActive = active;
   }
 
   public Set<Profile> getProfile() {
