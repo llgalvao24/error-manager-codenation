@@ -21,8 +21,12 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequestMapping("/api/v1/applications")
 public class ApplicationController {
 
+    private final ApplicationService applicationService;
+
     @Autowired
-    ApplicationService applicationService;
+    public ApplicationController(ApplicationService applicationService) {
+        this.applicationService = applicationService;
+    }
 
     @GetMapping
     public List<Application> findApplications(Application filtro) {
@@ -40,6 +44,4 @@ public class ApplicationController {
     public void deleteApplication(@PathVariable  Long id){
         applicationService.deleteApplication(id);
     }
-
-
 }

@@ -1,5 +1,6 @@
 package br.com.codenation.v1.errorManager.user;
 
+import br.com.codenation.v1.errorManager.exception.UserNaoEncontradoException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,11 +36,39 @@ public class UserService  {
     return userRepository.save(fromDTO(userDTO));
   }
 
+  public void delete(Long id){
+    userRepository.findById(id).map(u -> {
+      u.setActive(false);
+      userRepository.save(u);
+      return u;
+    }).orElseThrow(UserNaoEncontradoException::new);
+  }
+
+  public User update(UserDTO userDTO, Long id) {
+    userDTO.setId(id);
+    User user = fromDTOUpdate(userDTO);
+    User newUser = findById(user.getId());
+    updateData(newUser, user);
+    return userRepository.save(newUser);
+  }
+
+  private void updateData(User newUser, User user) {
+    newUser.setUsername(user.getUsername());
+  }
+
+  public User fromDTOUpdate(UserDTO userDTO){
+    return new User(
+        userDTO.getId(),
+        userDTO.getUsername(),
+        null
+    );
+  }
+
   public User fromDTO(UserDTO userDTO) {
     return new User(
         userDTO.getId(),
         userDTO.getUsername(),
-        bCryptPasswordEncoder.encode(userDTO.getUsername())
+        bCryptPasswordEncoder.encode(userDTO.getPassword())
     );
   }
 }
