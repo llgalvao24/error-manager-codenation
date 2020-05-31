@@ -23,6 +23,7 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @GetMapping("/users")
   @ApiOperation("Busca todos os usuários ativos.")
   public List<User> findAll(){
@@ -36,10 +37,11 @@ public class UserController {
     return userService.inset(user);
   }
 
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @DeleteMapping("{id}")
   @ApiOperation("Desativa um usuário com base no id")
   public void delete(@Param("id") Long id){
-
+    userService.delete(id);
   }
 
 
