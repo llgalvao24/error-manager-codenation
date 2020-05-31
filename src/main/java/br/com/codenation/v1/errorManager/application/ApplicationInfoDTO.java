@@ -2,11 +2,12 @@ package br.com.codenation.v1.errorManager.application;
 
 import java.time.LocalDateTime;
 
-public class ApplicationInformationDTO {
+public class ApplicationResponseDTO {
 
     private Long id;
     private String name;
     private LocalDateTime createdAt;
+    private boolean isActive;
 
     public Long getId() {
         return id;
@@ -30,5 +31,13 @@ public class ApplicationInformationDTO {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }
