@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.mapstruct.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -32,8 +34,10 @@ public class ApplicationController {
 
     @GetMapping
     @ApiOperation("Obtém uma lista de aplicações.")
-    public List<Application> findApplications(Application filtro) {
-        return applicationService.findApplications(filtro);
+    public List<ApplicationInformationDTO> findApplications(Application filtro,
+                                                            @Context HttpServletRequest request) {
+        return applicationService.findApplications(filtro,
+                        request.getHeader("Authorization").substring(7));
     }
 
     @PostMapping
@@ -43,16 +47,20 @@ public class ApplicationController {
             @ApiResponse(code = 201, message = "Aplicação salva com sucesso."),
             @ApiResponse(code = 400, message = "Erro de validação.")
     })
-    public void insertApplication(@Valid @RequestBody ApplicationDTO dto){
-        applicationService.saveApplication(dto);
+    public void insertApplication(@Valid @RequestBody ApplicationDTO dto,
+                                  @Context HttpServletRequest request){
+        applicationService.saveApplication(dto,
+                request.getHeader("Authorization").substring(7));
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @ApiOperation("Desativa uma aplicação.")
     @ApiResponse(code = 204, message = "Aplicação desativada com sucesso.")
-    public void deleteApplication(@ApiParam("Id da aplicação") @PathVariable  Long id){
-        applicationService.deleteApplication(id);
+    public void deleteApplication(@ApiParam("Id da aplicação") @PathVariable  Long id,
+                                  @Context HttpServletRequest request){
+        applicationService.deleteApplication(id,
+                    request.getHeader("Authorization").substring(7));
     }
 
 

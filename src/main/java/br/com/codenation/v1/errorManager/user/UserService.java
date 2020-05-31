@@ -1,11 +1,8 @@
 package br.com.codenation.v1.errorManager.user;
 
 import br.com.codenation.v1.errorManager.application.ApplicationRepository;
-import br.com.codenation.v1.errorManager.exception.UserNaoEncontradoException;
+import br.com.codenation.v1.errorManager.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +35,6 @@ public class UserService  {
                   u.setActive(false);
                   userRepository.save(u);
                   return u;
-                }).orElseThrow(() -> new UserNaoEncontradoException());
+                }).orElseThrow(() -> new UserNotFoundException());
   }
 }
