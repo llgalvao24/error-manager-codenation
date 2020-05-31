@@ -24,23 +24,32 @@ public class ApplicationService {
     @Autowired
     JWTUtil jwtUtil;
 
-    public List<ApplicationInformationDTO> findApplications(Application filtro, String token){
+    public List<ApplicationInfoDTO> findApplications(ApplicationInfoDTO filtro, String token){
+
+        Application application = this.convertToApplication(filtro);
+
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
-        filtro.setUser(this.convertUserByToken(token));
+        application.setUser(this.convertUserByToken(token));
 
-        Example criteria = Example.of(filtro, matcher);
+        Example criteria = Example.of(application, matcher);
 
         List<Application> applications = applicationRepository.findAll(criteria);
 
         return convertToResponseDTO(applications);
     }
 
-    public Application saveApplication(ApplicationDTO dto, String token){
+    public List<ApplicationInfoDTO> findByUserId(String token){
+        List<Application> applications = applicationRepository.findByUserId(this.convertUserByToken(token).getId());
+
+        return convertToResponseDTO(applications);
+    }
+
+    public Application saveApplication(ApplicationDTO name, String token){
         Application application = new Application();
-            application.setName(dto.getName());
+            application.setName(name.getName());
             application.setUser(this.convertUserByToken(token));
 
         return applicationRepository.save(application);
@@ -59,17 +68,24 @@ public class ApplicationService {
                 }).orElseThrow(() -> new ApplicationNotFoundException());
     }
 
-    private List<ApplicationInformationDTO> convertToResponseDTO(List<Application> applicationList){
+    private List<ApplicationInfoDTO> convertToResponseDTO(List<Application> applicationList){
         return applicationList.stream()
                     .map(this::convertToApplicationInformationDTO)
                     .collect(Collectors.toList());
     }
-
-    private ApplicationInformationDTO convertToApplicationInformationDTO(Application application){
-        ApplicationInformationDTO dto = new ApplicationInformationDTO();
+    private Application convertToApplication(ApplicationInfoDTO dto){
+        Application application = new Application();
+            application.setActive(dto.isActive());
+            application.setCreatedAt(dto.getCreatedAt());
+            application.setId(dto.getId());
+        return application;
+    }
+    private ApplicationInfoDTO convertToApplicationInformationDTO(Application application){
+        ApplicationInfoDTO dto = new ApplicationInfoDTO();
             dto.setId(application.getId());
             dto.setCreatedAt(application.getCreatedAt());
             dto.setName(application.getName());
+            dto.setActive(application.isActive());
 
         return dto;
     }

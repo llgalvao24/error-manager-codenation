@@ -34,11 +34,18 @@ public class ApplicationController {
 
     @GetMapping
     @ApiOperation("Obtém uma lista de aplicações.")
-    public List<ApplicationInformationDTO> findApplications(Application filtro,
-                                                            @Context HttpServletRequest request) {
+    public List<ApplicationInfoDTO> findApplications(ApplicationInfoDTO filtro,
+                                                     @Context HttpServletRequest request) {
         return applicationService.findApplications(filtro,
                         request.getHeader("Authorization").substring(7));
     }
+
+    @GetMapping("/all")
+    @ApiOperation("Obtém todos as aplicações do usuário, ativa ou inativa")
+    public List<ApplicationInfoDTO> findApplications(@Context HttpServletRequest request){
+        return applicationService.findByUserId(request.getHeader("Authorization").substring(7));
+    }
+
 
     @PostMapping
     @ResponseStatus(CREATED)
@@ -47,9 +54,9 @@ public class ApplicationController {
             @ApiResponse(code = 201, message = "Aplicação salva com sucesso."),
             @ApiResponse(code = 400, message = "Erro de validação.")
     })
-    public void insertApplication(@Valid @RequestBody ApplicationDTO dto,
+    public void insertApplication(@Valid @RequestBody ApplicationDTO name,
                                   @Context HttpServletRequest request){
-        applicationService.saveApplication(dto,
+        applicationService.saveApplication(name,
                 request.getHeader("Authorization").substring(7));
     }
 
