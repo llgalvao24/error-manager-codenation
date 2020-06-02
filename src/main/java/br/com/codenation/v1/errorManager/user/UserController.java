@@ -2,6 +2,8 @@ package br.com.codenation.v1.errorManager.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +33,13 @@ public class UserController {
 
   @GetMapping("/user/{id}")
   @ResponseStatus(HttpStatus.OK)
+  @ApiOperation("Lista um User dado um id.")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "Sucesso."),
+      @ApiResponse(code = 401, message = "Não autorizado"),
+      @ApiResponse(code = 403, message = "Acesso proibido."),
+      @ApiResponse(code = 404, message = "Não encontrado.")
+  })
   public User findById(@PathVariable Long id){
     return userService.findById(id);
   }
@@ -44,19 +53,30 @@ public class UserController {
 
   @PostMapping("/user")
   @ResponseStatus(HttpStatus.CREATED)
-  @ApiOperation("Insere um novo usuário (necessário ter perfil de ADMIN).")
+  @ApiResponses({
+      @ApiResponse(code = 201, message = "User salvo com sucesso."),
+      @ApiResponse(code = 400, message = "Erro de validação.")
+  })
   public User insert(@Valid @RequestBody UserDTO userDTO){
     return userService.inset(userDTO);
   }
 
   @PutMapping("/user/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ApiOperation( value = "Update um User")
+  @ApiResponses({
+      @ApiResponse( code = 404, message = "Not found." )
+  })
   public void update(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id) {
     userService.update(userDTO, id);
   }
 
   @DeleteMapping("/user/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ApiOperation( value = "Apaga um User")
+  @ApiResponses({
+      @ApiResponse( code = 404, message = "Not found." )
+  })
   public void delete(@PathVariable Long id){
     userService.delete(id);
   }
