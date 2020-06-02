@@ -61,14 +61,15 @@ public class User {
 
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "PROFILES")
-  private Set<Integer> profiles = new HashSet<>();
+  private final Set<Integer> profiles = new HashSet<>();
 
   public User() {
     addProfile(Profile.USER);
   }
 
-  public User(String username, String password) {
+  public User(Long id, String username, String password) {
     super();
+    this.id = id;
     this.username = username;
     this.password = password;
     addProfile(Profile.USER);
@@ -114,17 +115,6 @@ public class User {
 
   public void addProfile(Profile profile) {
     profiles.add(profile.getCode());
-  }
-
-  @Override
-  public String toString() {
-    return "User{" +
-        "id=" + id +
-        ", username='" + username + '\'' +
-        ", password='" + password + '\'' +
-        ", createdAt=" + createdAt +
-        ", updatedAt=" + updatedAt +
-        '}';
   }
 
   @Override
