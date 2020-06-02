@@ -1,5 +1,7 @@
 package br.com.codenation.v1.errorManager.user;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
+@Api("API User")
 public class UserController {
 
   private final UserService userService;
@@ -34,12 +37,14 @@ public class UserController {
 
   @GetMapping("/users")
   @ResponseStatus(HttpStatus.OK)
+  @ApiOperation("Buscar todos os usuários ativos.")
   public List<User> findAll(){
     return userService.findAll();
   }
 
   @PostMapping("/user")
   @ResponseStatus(HttpStatus.CREATED)
+  @ApiOperation("Insere um novo usuário (necessário ter perfil de ADMIN).")
   public User insert(@Valid @RequestBody UserDTO userDTO){
     return userService.inset(userDTO);
   }
