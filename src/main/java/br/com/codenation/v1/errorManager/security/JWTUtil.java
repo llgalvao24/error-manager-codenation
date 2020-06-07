@@ -1,9 +1,14 @@
 package br.com.codenation.v1.errorManager.security;
 
+import br.com.codenation.v1.errorManager.entity.User;
+import br.com.codenation.v1.errorManager.exception.OwnershipException;
+import br.com.codenation.v1.errorManager.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -16,6 +21,9 @@ public class JWTUtil {
 
   @Value("${jwt.expiration}")
   private Long expiration;
+
+  @Autowired
+  private UserRepository userRepository;
 
   public String generateToken(String username) {
     return Jwts.builder()
@@ -54,6 +62,17 @@ public class JWTUtil {
       return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
     } catch (Exception e){
       return null;
+    }
+  }
+
+  public User getAuthenticatedUser(){
+    return userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+  }
+
+  public void isAuthorized(User user){
+    User authenticatedUser = this.getAuthenticatedUser();
+    if (user.getId() != authenticatedUser.getId()){
+      throw new OwnershipException();
     }
   }
 }

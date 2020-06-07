@@ -1,6 +1,5 @@
-package br.com.codenation.v1.errorManager.application;
+package br.com.codenation.v1.errorManager.entity;
 
-import br.com.codenation.v1.errorManager.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -27,7 +26,7 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Campo name não foi informado. Por favor, insira um nome.")
     @Size(max = 255)
     @Column(name = "name")
     private String name;

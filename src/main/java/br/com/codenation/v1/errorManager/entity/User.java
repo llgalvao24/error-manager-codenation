@@ -1,4 +1,4 @@
-package br.com.codenation.v1.errorManager.user;
+package br.com.codenation.v1.errorManager.entity;
 
 import br.com.codenation.v1.errorManager.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonFormat;

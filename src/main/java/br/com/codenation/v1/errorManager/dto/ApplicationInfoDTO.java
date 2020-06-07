@@ -1,4 +1,4 @@
-package br.com.codenation.v1.errorManager.application;
+package br.com.codenation.v1.errorManager.dto;
 
 import java.time.LocalDateTime;
 

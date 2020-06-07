@@ -2,6 +2,6 @@ package br.com.codenation.v1.errorManager.exception;
 
 public class ApplicationNotFoundException extends RuntimeException {
     public ApplicationNotFoundException() {
-        super("Application not found.");
+        super("Aplicação não encontrada.");
     }
 }

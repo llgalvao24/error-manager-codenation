@@ -1,7 +1,9 @@
-package br.com.codenation.v1.errorManager.user;
+package br.com.codenation.v1.errorManager.service;
 
-import br.com.codenation.v1.errorManager.application.ApplicationRepository;
+import br.com.codenation.v1.errorManager.repository.ApplicationRepository;
+import br.com.codenation.v1.errorManager.entity.User;
 import br.com.codenation.v1.errorManager.exception.UserNotFoundException;
+import br.com.codenation.v1.errorManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,4 +39,5 @@ public class UserService  {
                   return u;
                 }).orElseThrow(() -> new UserNotFoundException());
   }
+
 }

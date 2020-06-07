@@ -1,8 +1,8 @@
 package br.com.codenation.v1.errorManager.dbtest;
 
 import br.com.codenation.v1.errorManager.enums.Profile;
-import br.com.codenation.v1.errorManager.user.User;
-import br.com.codenation.v1.errorManager.user.UserRepository;
+import br.com.codenation.v1.errorManager.entity.User;
+import br.com.codenation.v1.errorManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

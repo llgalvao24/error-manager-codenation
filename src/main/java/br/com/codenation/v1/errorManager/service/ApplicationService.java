@@ -1,9 +1,14 @@
-package br.com.codenation.v1.errorManager.application;
+package br.com.codenation.v1.errorManager.service;
 
+import br.com.codenation.v1.errorManager.dto.ApplicationDTO;
+import br.com.codenation.v1.errorManager.dto.ApplicationInfoDTO;
+import br.com.codenation.v1.errorManager.entity.Application;
 import br.com.codenation.v1.errorManager.exception.ApplicationNotFoundException;
+import br.com.codenation.v1.errorManager.exception.OwnershipException;
+import br.com.codenation.v1.errorManager.repository.ApplicationRepository;
 import br.com.codenation.v1.errorManager.security.JWTUtil;
-import br.com.codenation.v1.errorManager.user.User;
-import br.com.codenation.v1.errorManager.user.UserRepository;
+import br.com.codenation.v1.errorManager.entity.User;
+import br.com.codenation.v1.errorManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -24,15 +29,14 @@ public class ApplicationService {
     @Autowired
     JWTUtil jwtUtil;
 
-    public List<ApplicationInfoDTO> findApplications(ApplicationInfoDTO filtro, String token){
-
+    public List<ApplicationInfoDTO> findApplications(ApplicationInfoDTO filtro){
         Application application = this.convertToApplication(filtro);
 
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
-        application.setUser(this.convertUserByToken(token));
+        application.setUser(jwtUtil.getAuthenticatedUser());
 
         Example criteria = Example.of(application, matcher);
 
@@ -41,32 +45,30 @@ public class ApplicationService {
         return convertToResponseDTO(applications);
     }
 
-    public List<ApplicationInfoDTO> findByUserId(String token){
-        List<Application> applications = applicationRepository.findByUserId(this.convertUserByToken(token).getId());
+    public List<ApplicationInfoDTO> findByUserId(){
+        List<Application> applications = applicationRepository.findByUserId(jwtUtil.getAuthenticatedUser().getId());
 
         return convertToResponseDTO(applications);
     }
 
-    public Application saveApplication(ApplicationDTO name, String token){
+    public Application saveApplication(ApplicationDTO name){
         Application application = new Application();
             application.setName(name.getName());
-            application.setUser(this.convertUserByToken(token));
+            application.setUser(jwtUtil.getAuthenticatedUser());
 
         return applicationRepository.save(application);
     }
 
-    private User convertUserByToken(String token){
-        return userRepository.findByUsername(jwtUtil.getUsername(token));
-    }
-
-    public void deleteApplication(Long id, String token){
-        applicationRepository.findByIdAndUserId(id, this.convertUserByToken(token).getId())
+    public void deleteApplication(Long id){
+        applicationRepository.findById(id)
                 .map(a -> {
+                    jwtUtil.isAuthorized(a.getUser());
                     a.setActive(false);
                     applicationRepository.save(a);
                     return a;
                 }).orElseThrow(() -> new ApplicationNotFoundException());
     }
+
 
     private List<ApplicationInfoDTO> convertToResponseDTO(List<Application> applicationList){
         return applicationList.stream()
