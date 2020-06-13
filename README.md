@@ -8,6 +8,7 @@
   * [Link API Heroku](#link-api)
   * [Documentação](#documentação)
   * [Slides](#slides)
+  * [CircleCI Status](#circleci-master-status)
 
 ## Sobre o projeto
 
@@ -41,3 +42,6 @@ Documentação referente às rotas e respostas
 Slides da utilizados durante a apresentação
 * [Slides apresentação (incluir link pós criação)](https://www.google.com/)
 
+
+## CircleCI Master Status
+[![CircleCI](https://circleci.com/gh/llgalvao24/error-manager-codenation/tree/master.svg?style=svg)](https://circleci.com/gh/llgalvao24/error-manager-codenation/tree/master)
