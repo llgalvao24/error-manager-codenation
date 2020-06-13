@@ -1,8 +1,7 @@
-package br.com.codenation.v1.errorManager.user;
+package br.com.codenation.v1.errorManager.repository;
 
+import br.com.codenation.v1.errorManager.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

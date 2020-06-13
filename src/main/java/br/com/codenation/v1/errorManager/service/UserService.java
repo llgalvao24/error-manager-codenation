@@ -1,6 +1,9 @@
-package br.com.codenation.v1.errorManager.user;
+package br.com.codenation.v1.errorManager.service;
 
-import br.com.codenation.v1.errorManager.exception.UserNaoEncontradoException;
+import br.com.codenation.v1.errorManager.entity.User;
+import br.com.codenation.v1.errorManager.exception.UserNotFoundException;
+import br.com.codenation.v1.errorManager.repository.UserRepository;
+import br.com.codenation.v1.errorManager.dto.UserDTO;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,7 +44,7 @@ public class UserService  {
       u.setActive(false);
       userRepository.save(u);
       return u;
-    }).orElseThrow(UserNaoEncontradoException::new);
+    }).orElseThrow(UserNotFoundException::new);
   }
 
   public User update(UserDTO userDTO, Long id) {

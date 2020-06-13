@@ -1,10 +1,15 @@
-package br.com.codenation.v1.errorManager.user;
+package br.com.codenation.v1.errorManager.controller;
 
+import br.com.codenation.v1.errorManager.entity.User;
+import br.com.codenation.v1.errorManager.service.UserService;
+import br.com.codenation.v1.errorManager.dto.UserDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,9 +49,10 @@ public class UserController {
     return userService.findById(id);
   }
 
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @GetMapping("/users")
   @ResponseStatus(HttpStatus.OK)
-  @ApiOperation("Buscar todos os usuários ativos.")
+  @ApiOperation("Busca todos os usuários ativos.")
   public List<User> findAll(){
     return userService.findAll();
   }
@@ -71,13 +77,13 @@ public class UserController {
     userService.update(userDTO, id);
   }
 
-  @DeleteMapping("/user/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  @ApiOperation( value = "Apaga um User")
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @DeleteMapping("/uder/{id}")
+  @ApiOperation("Desativa um usuário com base no id")
   @ApiResponses({
       @ApiResponse( code = 404, message = "Not found." )
   })
-  public void delete(@PathVariable Long id){
+  public void delete(@Param("id") Long id){
     userService.delete(id);
   }
 }
