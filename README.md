@@ -12,7 +12,7 @@
 
 ## Sobre o projeto
 
-Projeto desenvolvido durante o bootcamp Java AceleraDev oferecido pela [Codenation](https://codenation.dev/) e em parceria com a [CI&T](https://br.ciandt.com/).
+Projeto desenvolvido durante a aceleração AceleraDev-Java oferecido pela [Codenation](https://codenation.dev/) e em parceria com a [CI&T](https://br.ciandt.com/).
 
 A solução consiste em fazer uma aplicação para gerenciar log de erros, com os seguintes requisitos:
 
