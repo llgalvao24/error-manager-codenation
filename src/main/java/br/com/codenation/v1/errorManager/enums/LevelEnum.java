@@ -18,7 +18,7 @@ public enum LevelEnum {
         return level;
     }
 
-    public static LevelEnum findLevel(String level){
+    public static LevelEnum toEnum(String level){
 
         if (level == null){
             throw new NullPointerException("Level is required");
