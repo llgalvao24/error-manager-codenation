@@ -1,4 +1,6 @@
-package br.com.codenation.v1.errorManager.user;
+package br.com.codenation.v1.errorManager.dto;
+
+import br.com.codenation.v1.errorManager.entity.User;
 
 import java.io.Serializable;
 

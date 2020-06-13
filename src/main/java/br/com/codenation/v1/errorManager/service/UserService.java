@@ -3,7 +3,7 @@ package br.com.codenation.v1.errorManager.service;
 import br.com.codenation.v1.errorManager.entity.User;
 import br.com.codenation.v1.errorManager.exception.UserNotFoundException;
 import br.com.codenation.v1.errorManager.repository.UserRepository;
-import br.com.codenation.v1.errorManager.user.UserDTO;
+import br.com.codenation.v1.errorManager.dto.UserDTO;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

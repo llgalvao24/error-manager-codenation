@@ -2,7 +2,7 @@ package br.com.codenation.v1.errorManager.controller;
 
 import br.com.codenation.v1.errorManager.entity.User;
 import br.com.codenation.v1.errorManager.service.UserService;
-import br.com.codenation.v1.errorManager.user.UserDTO;
+import br.com.codenation.v1.errorManager.dto.UserDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
