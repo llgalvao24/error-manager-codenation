@@ -19,8 +19,12 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @Api("API Application")
 public class ApplicationController {
 
+    private final ApplicationService applicationService;
+
     @Autowired
-    ApplicationService applicationService;
+    public ApplicationController(ApplicationService applicationService) {
+        this.applicationService = applicationService;
+    }
 
     @GetMapping
     @ApiOperation("Obtém uma lista de aplicações.")
@@ -53,6 +57,4 @@ public class ApplicationController {
     public void deleteApplication(@ApiParam("Id da aplicação") @PathVariable  Long id){
         applicationService.deleteApplication(id);
     }
-
-
 }

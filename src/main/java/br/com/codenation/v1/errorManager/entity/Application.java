@@ -46,6 +46,12 @@ public class Application {
     public Application() {
     }
 
+    public Application(Long id, String name, User user) {
+        this.id = id;
+        this.name = name;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
