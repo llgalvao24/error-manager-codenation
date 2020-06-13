@@ -26,7 +26,7 @@ A solução consiste em fazer uma aplicação para gerenciar log de erros, com o
 * [MapStruct](https://mapstruct.org/)
 
 ### Banco de dados
-Utilizado banco de dados relacional com Mapper e Data Transfer Object(DTO)
+Banco de dados utilizado para persistência de dados da API.
 * [postgresql](https://www.postgresql.org/)
 
 
