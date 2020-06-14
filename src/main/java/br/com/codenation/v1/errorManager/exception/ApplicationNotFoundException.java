@@ -4,4 +4,8 @@ public class ApplicationNotFoundException extends RuntimeException {
     public ApplicationNotFoundException() {
         super("Aplicação não encontrada.");
     }
+
+    public ApplicationNotFoundException(String message) {
+        super(message);
+    }
 }
