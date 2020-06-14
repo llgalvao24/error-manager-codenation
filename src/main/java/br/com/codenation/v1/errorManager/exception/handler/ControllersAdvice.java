@@ -5,7 +5,9 @@ import br.com.codenation.v1.errorManager.exception.ApplicationNotFoundException;
 import br.com.codenation.v1.errorManager.exception.LevelNotFoundException;
 import br.com.codenation.v1.errorManager.exception.LogNotFoundException;
 import br.com.codenation.v1.errorManager.exception.OwnershipException;
+import br.com.codenation.v1.errorManager.exception.PageableDefinitionException;
 import br.com.codenation.v1.errorManager.exception.UserNotFoundException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,6 +52,18 @@ public class ControllersAdvice {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrors handleConstraintDeclarationException (ConstraintViolationException e){
+        return new ApiErrors(e.getMessage());
+    }
+    @ExceptionHandler(PageableDefinitionException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handlePageableDefinitionException(PageableDefinitionException e){
+        return new ApiErrors(e.getMessage());
+
+    }
+
+    @ExceptionHandler(PropertyReferenceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handlePropertyReferenceException(PropertyReferenceException e){
         return new ApiErrors(e.getMessage());
     }
 
