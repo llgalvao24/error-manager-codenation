@@ -2,7 +2,7 @@ package br.com.codenation.v1.errorManager.controller;
 
 import br.com.codenation.v1.errorManager.dto.ApplicationDTO;
 import br.com.codenation.v1.errorManager.dto.ApplicationInfoDTO;
-import br.com.codenation.v1.errorManager.service.ApplicationService;
+import br.com.codenation.v1.errorManager.service.impl.ApplicationService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
