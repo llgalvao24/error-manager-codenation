@@ -1,5 +1,8 @@
 # Central de Erros - API
 
+## CircleCI Master Status
+[![CircleCI](https://circleci.com/gh/llgalvao24/error-manager-codenation/tree/master.svg?style=svg)](https://circleci.com/gh/llgalvao24/error-manager-codenation/tree/master)
+
 ## Indice
 
 * [Sobre o projeto](#sobre-o-projeto)
@@ -42,6 +45,3 @@ Documentação da API.
 Slides utilizados durante a apresentação.
 * [Slides apresentação (incluir link pós criação)](https://www.google.com/)
 
-
-## CircleCI Master Status
-[![CircleCI](https://circleci.com/gh/llgalvao24/error-manager-codenation/tree/master.svg?style=svg)](https://circleci.com/gh/llgalvao24/error-manager-codenation/tree/master)
