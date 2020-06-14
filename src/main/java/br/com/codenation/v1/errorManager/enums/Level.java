@@ -10,9 +10,10 @@ public enum Level {
     INFO(3, "INFO");
 
     private int code;
-    private final String level;
+    private String level;
 
     Level(int code, String level){
+        this.code = code;
         this.level = level;
     }
 
@@ -31,6 +32,7 @@ public enum Level {
         }
 
         for (Level c : Level.values()){
+            Integer codigo = c.getCode();
             if (code.equals(c.getCode())){
                 return c;
             }

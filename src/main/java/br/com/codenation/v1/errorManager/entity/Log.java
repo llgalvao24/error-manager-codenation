@@ -56,7 +56,8 @@ public class Log {
         String details,
         String log,
         Level level,
-        Application application
+        Application application,
+        String environment
     ) {
         this.id = id;
         this.description = description;
@@ -64,6 +65,7 @@ public class Log {
         this.log = log;
         this.level = level.getCode();
         this.application = application;
+        this.environment = environment;
     }
 
     public Long getId() {

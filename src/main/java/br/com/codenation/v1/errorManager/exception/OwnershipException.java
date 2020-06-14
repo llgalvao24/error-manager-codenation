@@ -7,4 +7,8 @@ public class OwnershipException extends RuntimeException {
         super("Operação não concluída, pois o objeto solicitado não é de propriedade do usuário autenticado. " +
                 "Por favor, informe um objeto válido");
     }
+
+    public OwnershipException(String message) {
+        super(message);
+    }
 }

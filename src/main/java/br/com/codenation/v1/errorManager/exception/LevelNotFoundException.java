@@ -4,4 +4,8 @@ public class LevelNotFoundException extends RuntimeException{
     public LevelNotFoundException() {
             super("Level não encontrado.");
     }
+
+    public LevelNotFoundException(String message) {
+        super(message);
+    }
 }

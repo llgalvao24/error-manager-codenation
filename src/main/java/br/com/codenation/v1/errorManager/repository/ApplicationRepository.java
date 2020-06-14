@@ -15,4 +15,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     List<Application> findByUserId(@Param("userId") Long userId);
 
+    Optional<Application> findByNameAndUserId(String name, Long userId);
+
 }
