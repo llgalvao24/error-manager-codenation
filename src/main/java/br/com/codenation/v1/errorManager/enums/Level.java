@@ -2,7 +2,7 @@ package br.com.codenation.v1.errorManager.enums;
 
 import br.com.codenation.v1.errorManager.exception.LevelNotFoundException;
 
-public enum TypeLevel {
+public enum Level {
 
     ERROR(0, "ERROR"),
     WARNING(1,"WARNING"),
@@ -12,23 +12,27 @@ public enum TypeLevel {
     private int code;
     private final String level;
 
-    TypeLevel(int code, String level){
+    Level(int code, String level){
         this.level = level;
+    }
+
+    public int getCode() {
+        return code;
     }
 
     public String getLevel() {
         return level;
     }
 
-    public static TypeLevel toEnum(String level){
+    public static Level toEnum(Integer code){
 
-        if (level == null){
+        if (code == null){
             throw new NullPointerException("Level is required");
         }
 
-        for (TypeLevel l : TypeLevel.values()){
-            if (level.equalsIgnoreCase(l.level)){
-                return l;
+        for (Level c : Level.values()){
+            if (code.equals(c.getCode())){
+                return c;
             }
         }
 

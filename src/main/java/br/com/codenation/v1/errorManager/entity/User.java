@@ -99,6 +99,14 @@ public class User {
     this.password= password;
   }
 
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
   public boolean isActive() {
     return isActive;
   }

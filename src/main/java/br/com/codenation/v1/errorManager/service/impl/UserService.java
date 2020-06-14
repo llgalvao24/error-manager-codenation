@@ -1,4 +1,4 @@
-package br.com.codenation.v1.errorManager.service;
+package br.com.codenation.v1.errorManager.service.impl;
 
 import br.com.codenation.v1.errorManager.entity.User;
 import br.com.codenation.v1.errorManager.exception.UserNotFoundException;

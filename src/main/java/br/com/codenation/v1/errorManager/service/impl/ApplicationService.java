@@ -1,4 +1,4 @@
-package br.com.codenation.v1.errorManager.service;
+package br.com.codenation.v1.errorManager.service.impl;
 
 import br.com.codenation.v1.errorManager.dto.ApplicationDTO;
 import br.com.codenation.v1.errorManager.dto.ApplicationInfoDTO;
