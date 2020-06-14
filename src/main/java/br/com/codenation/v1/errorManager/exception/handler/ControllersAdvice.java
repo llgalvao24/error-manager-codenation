@@ -2,7 +2,10 @@ package br.com.codenation.v1.errorManager.exception.handler;
 
 import br.com.codenation.v1.errorManager.exception.ApiErrors;
 import br.com.codenation.v1.errorManager.exception.ApplicationNotFoundException;
+import br.com.codenation.v1.errorManager.exception.LevelNotFoundException;
+import br.com.codenation.v1.errorManager.exception.LogNotFoundException;
 import br.com.codenation.v1.errorManager.exception.OwnershipException;
+import br.com.codenation.v1.errorManager.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,6 +20,24 @@ public class ControllersAdvice {
     @ExceptionHandler(ApplicationNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiErrors handleApplicationNotFoundException( ApplicationNotFoundException e){
+        return new ApiErrors(e.getMessage());
+    }
+
+    @ExceptionHandler(LogNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleLogNotFoundException(LogNotFoundException e){
+        return new ApiErrors(e.getMessage());
+    }
+
+    @ExceptionHandler(LevelNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleLevelNotFoundException(LevelNotFoundException e){
+        return new ApiErrors(e.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleUserNotFoundException(UserNotFoundException e){
         return new ApiErrors(e.getMessage());
     }
 
@@ -37,5 +58,6 @@ public class ControllersAdvice {
     public ApiErrors handleOwnershipException(OwnershipException e){
         return new ApiErrors(e.getMessage());
     }
+
 
 }
