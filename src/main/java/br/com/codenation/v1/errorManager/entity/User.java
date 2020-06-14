@@ -1,4 +1,4 @@
-package br.com.codenation.v1.errorManager.user;
+package br.com.codenation.v1.errorManager.entity;
 
 import br.com.codenation.v1.errorManager.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -57,17 +56,20 @@ public class User {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
+  @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT TRUE")
+  private boolean isActive = true;
+
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "PROFILES")
-  private Set<Integer> profiles = new HashSet<>();
-
+  private final Set<Integer> profiles = new HashSet<>();
 
   public User() {
     addProfile(Profile.USER);
   }
 
-  public User(String username, String password) {
+  public User(Long id, String username, String password) {
     super();
+    this.id = id;
     this.username = username;
     this.password = password;
     addProfile(Profile.USER);
@@ -97,6 +99,14 @@ public class User {
     this.password= password;
   }
 
+  public boolean isActive() {
+    return isActive;
+  }
+
+  public void setActive(boolean active) {
+    isActive = active;
+  }
+
   public Set<Profile> getProfile() {
     return profiles.stream()
         .map(Profile::toEnum)
@@ -105,17 +115,6 @@ public class User {
 
   public void addProfile(Profile profile) {
     profiles.add(profile.getCode());
-  }
-
-  @Override
-  public String toString() {
-    return "User{" +
-        "id=" + id +
-        ", username='" + username + '\'' +
-        ", password='" + password + '\'' +
-        ", createdAt=" + createdAt +
-        ", updatedAt=" + updatedAt +
-        '}';
   }
 
   @Override

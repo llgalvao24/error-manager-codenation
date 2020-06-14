@@ -1,7 +1,7 @@
 package br.com.codenation.v1.errorManager.security;
 
-import br.com.codenation.v1.errorManager.user.User;
-import br.com.codenation.v1.errorManager.user.UserRepository;
+import br.com.codenation.v1.errorManager.entity.User;
+import br.com.codenation.v1.errorManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

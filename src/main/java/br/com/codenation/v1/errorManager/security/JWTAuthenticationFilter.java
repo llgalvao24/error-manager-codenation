@@ -1,6 +1,6 @@
 package br.com.codenation.v1.errorManager.security;
 
-import br.com.codenation.v1.errorManager.user.User;
+import br.com.codenation.v1.errorManager.entity.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
