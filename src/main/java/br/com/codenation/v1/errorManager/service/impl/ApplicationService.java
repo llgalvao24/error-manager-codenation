@@ -9,6 +9,7 @@ import br.com.codenation.v1.errorManager.repository.ApplicationRepository;
 import br.com.codenation.v1.errorManager.security.JWTUtil;
 import br.com.codenation.v1.errorManager.entity.User;
 import br.com.codenation.v1.errorManager.repository.UserRepository;
+import br.com.codenation.v1.errorManager.service.interfaces.ApplicationServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ApplicationService {
+public class ApplicationService implements ApplicationServiceInterface {
 
     @Autowired
     ApplicationRepository applicationRepository;
