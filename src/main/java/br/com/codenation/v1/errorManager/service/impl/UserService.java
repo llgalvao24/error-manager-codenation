@@ -1,38 +1,47 @@
 package br.com.codenation.v1.errorManager.service.impl;
 
+import br.com.codenation.v1.errorManager.dto.UserInfoDTO;
 import br.com.codenation.v1.errorManager.entity.User;
 import br.com.codenation.v1.errorManager.exception.UserNotFoundException;
+import br.com.codenation.v1.errorManager.mappers.UserMapper;
 import br.com.codenation.v1.errorManager.repository.UserRepository;
 import br.com.codenation.v1.errorManager.dto.UserDTO;
-import org.hibernate.ObjectNotFoundException;
+import br.com.codenation.v1.errorManager.service.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class UserService  {
+public class UserService implements UserServiceInterface {
 
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final UserMapper userMapper;
 
   @Autowired
-  public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+  public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper) {
     this.userRepository = userRepository;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    this.userMapper = userMapper;
   }
 
   public User findById(Long id) {
-    Optional<User> user = userRepository.findById(id);
-    return user.orElseThrow(
-        () -> new ObjectNotFoundException("User not found! Id: " + id, User.class.getName())
-    );
+    return userRepository.findById(id)
+            .orElseThrow(UserNotFoundException::new);
   }
 
-  public List<User> findAll() {
-    return userRepository.findAll();
+  public UserInfoDTO findByIdInfo(Long id) {
+    User user = userRepository.findById(id)
+            .orElseThrow(UserNotFoundException::new);
+
+    return userMapper.map(user);
+  }
+
+  public List<UserInfoDTO> findAll() {
+    List<User> users = userRepository.findAll();
+    return userMapper.map(users);
   }
 
   public User inset(UserDTO userDTO){

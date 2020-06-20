@@ -9,9 +9,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +20,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/log")
 @Api("Log API")
 public class LogController {
 
-  private LogService logService;
+  private final LogService logService;
 
   @Autowired
   public LogController(LogService logService) {
@@ -41,9 +37,11 @@ public class LogController {
   @ResponseStatus(HttpStatus.OK)
   @ApiOperation("Busca todos os logs do usuário autenticado.")
   @ApiResponse(code = 200, message = "Sucesso.")
-  public List<Log> findAll(@RequestParam(value = "page", defaultValue = "1") Integer pagina,
-                           @RequestParam(value = "size", defaultValue = "25") Integer tamanhoPagina,
-                           @RequestParam(value = "orderby", defaultValue = "id") String orderBy){
+  public List<LogDTO> findAll(
+          @RequestParam(value = "page", defaultValue = "1") Integer pagina,
+          @RequestParam(value = "size", defaultValue = "25") Integer tamanhoPagina,
+          @RequestParam(value = "orderby", defaultValue = "id") String orderBy
+  ){
 
     return logService.findByApplicationUserId(pagina, tamanhoPagina, orderBy);
   }
@@ -55,7 +53,7 @@ public class LogController {
           @ApiResponse(code = 200, message = "Sucesso."),
           @ApiResponse(code = 403, message = "Objeto não é de propriedade do usuário autenticado.")
   })
-  public Log findById(@ApiParam("Id do Log") @PathVariable Long id){
+  public LogDTO findById(@ApiParam("Id do Log") @PathVariable Long id){
     return logService.findById(id);
   }
 
@@ -66,7 +64,7 @@ public class LogController {
           @ApiResponse(code = 200, message = "Sucesso."),
           @ApiResponse(code = 403, message = "Objeto não é de propriedade do usuário autenticado.")
   })
-  public List<Log> findByApplicationId(@ApiParam("Id da aplicação") @PathVariable Long applicationId) {
+  public List<LogDTO> findByApplicationId(@ApiParam("Id da aplicação") @PathVariable Long applicationId) {
     return logService.findByApplicationId(applicationId);
   }
 

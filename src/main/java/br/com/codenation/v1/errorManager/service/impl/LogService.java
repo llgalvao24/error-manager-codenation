@@ -7,6 +7,7 @@ import br.com.codenation.v1.errorManager.enums.Level;
 import br.com.codenation.v1.errorManager.exception.ApplicationNotFoundException;
 import br.com.codenation.v1.errorManager.exception.LogNotFoundException;
 import br.com.codenation.v1.errorManager.exception.PageableDefinitionException;
+import br.com.codenation.v1.errorManager.mappers.LogMapper;
 import br.com.codenation.v1.errorManager.repository.ApplicationRepository;
 import br.com.codenation.v1.errorManager.repository.LogRepository;
 import br.com.codenation.v1.errorManager.security.JWTUtil;
@@ -24,36 +25,40 @@ public class LogService implements LogServiceInterface {
   private final LogRepository logRepository;
   private final ApplicationRepository applicationRepository;
   private final JWTUtil jwtUtil;
+  private final LogMapper logMapper;
 
   @Autowired
-  public LogService(LogRepository logRepository, ApplicationRepository applicationRepository, JWTUtil jwtUtil) {
+  public LogService(LogRepository logRepository, ApplicationRepository applicationRepository, JWTUtil jwtUtil, LogMapper logMapper) {
     this.logRepository = logRepository;
     this.applicationRepository = applicationRepository;
     this.jwtUtil = jwtUtil;
+    this.logMapper = logMapper;
   }
 
   @Override
-  public Log findById(Long id) {
+  public LogDTO findById(Long id) {
     Log log = logRepository.findById(id)
                 .orElseThrow(LogNotFoundException::new);
 
     this.jwtUtil.isAuthorized(log.getApplication().getUser());
 
-    return log;
+    return logMapper.map(log);
   }
 
   @Override
-  public List<Log> findByApplicationId(Long applicationId) {
+  public List<LogDTO> findByApplicationId(Long applicationId) {
     Application application = applicationRepository.findById(applicationId)
                               .orElseThrow(ApplicationNotFoundException::new);
 
     this.jwtUtil.isAuthorized(application.getUser());
 
-    return logRepository.findLogByApplicationId(applicationId);
+    List<Log> logs = logRepository.findLogByApplicationId(applicationId);
+
+    return logMapper.map(logs);
   }
 
   @Override
-  public List<Log> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao) {
+  public List<LogDTO> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao) {
 
     if (pagina < 1){
       throw new PageableDefinitionException("Número da página precisa ser maior que 0");
@@ -61,14 +66,16 @@ public class LogService implements LogServiceInterface {
     if (tamanhoPagina < 1){
       throw new PageableDefinitionException("Tamanho da página precisa ser maior que 0.");
     }
-    if (campoOrdenacao == null || campoOrdenacao == ""){
+    if (campoOrdenacao == null || campoOrdenacao.equals("")){
       throw new NullPointerException("Parâmetro orderby não pode ser nulo");
     }
 
     Sort sort = Sort.by(Sort.Direction.ASC, campoOrdenacao);
     PageRequest pageRequest = PageRequest.of(pagina - 1, tamanhoPagina, sort);
 
-    return logRepository.findByApplicationUserId(this.jwtUtil.getAuthenticatedUser().getId(), pageRequest);
+    List<Log> logs = logRepository.findByApplicationUserId(this.jwtUtil.getAuthenticatedUser().getId(), pageRequest);
+
+    return logMapper.map(logs);
   }
 
   @Override
@@ -77,20 +84,19 @@ public class LogService implements LogServiceInterface {
   }
 
   private Log fromDTO(LogDTO dto){
-    Application application = applicationRepository.findByNameAndUserId(dto.getapplication(),
-                                      this.jwtUtil.getAuthenticatedUser().getId())
-                                      .orElseThrow(() -> new ApplicationNotFoundException("Usuário autenticado não possui a aplicação informada."));
+    Application application = applicationRepository
+            .findByNameAndUserId(dto.getApplication().getName(), this.jwtUtil.getAuthenticatedUser().getId())
+            .orElseThrow(() -> new ApplicationNotFoundException("Usuário autenticado não possui a aplicação informada."));
 
-    Log log = new Log(
+    return new Log(
             null,
             dto.getDescription(),
             dto.getDetails(),
             dto.getLog(),
-            Level.toEnum(dto.getLevel()),
+            Level.toEnum(dto.getLevel().getCode()),
             application,
             dto.getEnvironment()
     );
-    return log;
   }
 
 }

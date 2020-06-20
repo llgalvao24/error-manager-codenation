@@ -1,5 +1,6 @@
 package br.com.codenation.v1.errorManager.controller;
 
+import br.com.codenation.v1.errorManager.dto.UserInfoDTO;
 import br.com.codenation.v1.errorManager.entity.User;
 import br.com.codenation.v1.errorManager.service.impl.UserService;
 import br.com.codenation.v1.errorManager.dto.UserDTO;
@@ -45,15 +46,15 @@ public class UserController {
       @ApiResponse(code = 403, message = "Acesso proibido."),
       @ApiResponse(code = 404, message = "Não encontrado.")
   })
-  public User findById(@PathVariable Long id){
-    return userService.findById(id);
+  public UserInfoDTO findById(@PathVariable Long id){
+    return userService.findByIdInfo(id);
   }
 
   @PreAuthorize("hasAnyRole('ADMIN')")
   @GetMapping("/users")
   @ResponseStatus(HttpStatus.OK)
   @ApiOperation("Busca todos os usuários ativos.")
-  public List<User> findAll(){
+  public List<UserInfoDTO> findAll(){
     return userService.findAll();
   }
 
