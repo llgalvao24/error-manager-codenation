@@ -6,11 +6,14 @@ import br.com.codenation.v1.errorManager.entity.Log;
 import br.com.codenation.v1.errorManager.enums.Level;
 import br.com.codenation.v1.errorManager.exception.ApplicationNotFoundException;
 import br.com.codenation.v1.errorManager.exception.LogNotFoundException;
+import br.com.codenation.v1.errorManager.exception.PageableDefinitionException;
 import br.com.codenation.v1.errorManager.repository.ApplicationRepository;
 import br.com.codenation.v1.errorManager.repository.LogRepository;
 import br.com.codenation.v1.errorManager.security.JWTUtil;
 import br.com.codenation.v1.errorManager.service.interfaces.LogServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,8 +53,22 @@ public class LogService implements LogServiceInterface {
   }
 
   @Override
-  public List<Log> findByApplicationUserId() {
-    return logRepository.findByApplicationUserId(this.jwtUtil.getAuthenticatedUser().getId());
+  public List<Log> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao) {
+
+    if (pagina < 1){
+      throw new PageableDefinitionException("Número da página precisa ser maior que 0");
+    }
+    if (tamanhoPagina < 1){
+      throw new PageableDefinitionException("Tamanho da página precisa ser maior que 0.");
+    }
+    if (campoOrdenacao == null || campoOrdenacao == ""){
+      throw new NullPointerException("Parâmetro orderby não pode ser nulo");
+    }
+
+    Sort sort = Sort.by(Sort.Direction.ASC, campoOrdenacao);
+    PageRequest pageRequest = PageRequest.of(pagina - 1, tamanhoPagina, sort);
+
+    return logRepository.findByApplicationUserId(this.jwtUtil.getAuthenticatedUser().getId(), pageRequest);
   }
 
   @Override
