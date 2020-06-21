@@ -1,6 +1,7 @@
 package br.com.codenation.v1.errorManager.service.impl;
 
 import br.com.codenation.v1.errorManager.dto.LogDTO;
+import br.com.codenation.v1.errorManager.dto.LogInfoDTO;
 import br.com.codenation.v1.errorManager.entity.Application;
 import br.com.codenation.v1.errorManager.entity.Log;
 import br.com.codenation.v1.errorManager.enums.Level;
@@ -36,7 +37,7 @@ public class LogService implements LogServiceInterface {
   }
 
   @Override
-  public LogDTO findById(Long id) {
+  public LogInfoDTO findById(Long id) {
     Log log = logRepository.findById(id)
                 .orElseThrow(LogNotFoundException::new);
 
@@ -46,7 +47,7 @@ public class LogService implements LogServiceInterface {
   }
 
   @Override
-  public List<LogDTO> findByApplicationId(Long applicationId) {
+  public List<LogInfoDTO> findByApplicationId(Long applicationId) {
     Application application = applicationRepository.findById(applicationId)
                               .orElseThrow(ApplicationNotFoundException::new);
 
@@ -58,7 +59,7 @@ public class LogService implements LogServiceInterface {
   }
 
   @Override
-  public List<LogDTO> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao) {
+  public List<LogInfoDTO> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao) {
 
     if (pagina < 1){
       throw new PageableDefinitionException("Número da página precisa ser maior que 0");
@@ -79,8 +80,18 @@ public class LogService implements LogServiceInterface {
   }
 
   @Override
-  public Log insert(LogDTO log) {
-    return logRepository.save(fromDTO(log));
+  public LogInfoDTO insert(LogDTO log) {
+    Log newLog = fromDTO(log);
+    Log oldLog = findLogIfExists(newLog);
+
+    if (oldLog == null) {
+      newLog.addEvent();
+      return logMapper.map(logRepository.save(newLog));
+    }else{
+      oldLog.addEvent();
+      return logMapper.map(logRepository.save(oldLog));
+    }
+
   }
 
   private Log fromDTO(LogDTO dto){
@@ -96,6 +107,18 @@ public class LogService implements LogServiceInterface {
             Level.toEnum(dto.getLevel().getCode()),
             application,
             dto.getEnvironment()
+    );
+  }
+
+  private Log findLogIfExists(Log log){
+    return  logRepository.findByLevelAndDescriptionAndDetailsAndEnvironmentAndLogAndApplicationIdAndApplicationUserId(
+            log.getLevel().getCode(),
+            log.getDescription(),
+            log.getDetails(),
+            log.getEnvironment(),
+            log.getLog(),
+            log.getApplication().getId(),
+            log.getApplication().getUser().getId()
     );
   }
 

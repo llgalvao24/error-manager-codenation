@@ -1,6 +1,7 @@
 package br.com.codenation.v1.errorManager.entity;
 
 import br.com.codenation.v1.errorManager.enums.Level;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.models.auth.In;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -44,8 +45,11 @@ public class Log {
     private LocalDateTime updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "appication_id")
+    @JoinColumn(name = "application_id")
     private Application application;
+
+    @Column(columnDefinition = "INTEGER DEFAULT 1")
+    private Long numberEvents;
 
     public Log() {
     }
@@ -132,6 +136,18 @@ public class Log {
         this.application = application;
     }
 
+    public Long getNumberEvents() {
+        return numberEvents;
+    }
+
+    public void addEvent() {
+        if (this.numberEvents == null) {
+            this.numberEvents = 1L;
+        }else {
+            this.numberEvents += 1;
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -139,6 +155,7 @@ public class Log {
         Log log = (Log) o;
         return Objects.equals(id, log.id);
     }
+
 
     @Override
     public int hashCode() {

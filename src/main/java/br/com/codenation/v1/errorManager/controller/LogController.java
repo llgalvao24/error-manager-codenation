@@ -1,7 +1,7 @@
 package br.com.codenation.v1.errorManager.controller;
 
 import br.com.codenation.v1.errorManager.dto.LogDTO;
-import br.com.codenation.v1.errorManager.entity.Log;
+import br.com.codenation.v1.errorManager.dto.LogInfoDTO;
 import br.com.codenation.v1.errorManager.service.impl.LogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/log")
+@RequestMapping(value = "/api/v1/log", produces = "application/json")
 @Api("Log API")
 public class LogController {
 
@@ -37,10 +37,10 @@ public class LogController {
   @ResponseStatus(HttpStatus.OK)
   @ApiOperation("Busca todos os logs do usuário autenticado.")
   @ApiResponse(code = 200, message = "Sucesso.")
-  public List<LogDTO> findAll(
-          @RequestParam(value = "page", defaultValue = "1") Integer pagina,
-          @RequestParam(value = "size", defaultValue = "25") Integer tamanhoPagina,
-          @RequestParam(value = "orderby", defaultValue = "id") String orderBy
+  public List<LogInfoDTO> findAll(
+      @ApiParam("Número da página a ser visualizada.")    @RequestParam(value = "page", defaultValue = "1") Integer pagina,
+      @ApiParam("Quantos logs por página.")    @RequestParam(value = "size", defaultValue = "25") Integer tamanhoPagina,
+      @ApiParam("Por qual campo ordenar.")    @RequestParam(value = "orderby", defaultValue = "id") String orderBy
   ){
 
     return logService.findByApplicationUserId(pagina, tamanhoPagina, orderBy);
@@ -53,7 +53,7 @@ public class LogController {
           @ApiResponse(code = 200, message = "Sucesso."),
           @ApiResponse(code = 403, message = "Objeto não é de propriedade do usuário autenticado.")
   })
-  public LogDTO findById(@ApiParam("Id do Log") @PathVariable Long id){
+  public LogInfoDTO findById(@ApiParam("Id do Log") @PathVariable Long id){
     return logService.findById(id);
   }
 
@@ -64,7 +64,7 @@ public class LogController {
           @ApiResponse(code = 200, message = "Sucesso."),
           @ApiResponse(code = 403, message = "Objeto não é de propriedade do usuário autenticado.")
   })
-  public List<LogDTO> findByApplicationId(@ApiParam("Id da aplicação") @PathVariable Long applicationId) {
+  public List<LogInfoDTO> findByApplicationId(@ApiParam("Id da aplicação") @PathVariable Long applicationId) {
     return logService.findByApplicationId(applicationId);
   }
 
@@ -76,7 +76,7 @@ public class LogController {
           @ApiResponse(code = 400, message = "Erro de validação."),
           @ApiResponse(code = 403, message = "Token inválido.")
   })
-  public Log insert(@RequestBody LogDTO dto){
-    return logService.insert(dto);
+  public LogInfoDTO insert(@ApiParam("Log a ser informado para a API.") @RequestBody LogDTO log){
+    return logService.insert(log);
   }
 }
