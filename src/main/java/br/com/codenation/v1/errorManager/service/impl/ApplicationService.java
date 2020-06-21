@@ -5,6 +5,7 @@ import br.com.codenation.v1.errorManager.dto.ApplicationInfoDTO;
 import br.com.codenation.v1.errorManager.entity.Application;
 import br.com.codenation.v1.errorManager.exception.ApplicationNotFoundException;
 import br.com.codenation.v1.errorManager.exception.OwnershipException;
+import br.com.codenation.v1.errorManager.mappers.ApplicationMapper;
 import br.com.codenation.v1.errorManager.repository.ApplicationRepository;
 import br.com.codenation.v1.errorManager.security.JWTUtil;
 import br.com.codenation.v1.errorManager.entity.User;
@@ -21,35 +22,30 @@ import java.util.stream.Collectors;
 @Service
 public class ApplicationService implements ApplicationServiceInterface {
 
-    @Autowired
-    ApplicationRepository applicationRepository;
+    private ApplicationRepository applicationRepository;
+    private UserRepository userRepository;
+    private JWTUtil jwtUtil;
+    private ApplicationMapper applicationMapper;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    JWTUtil jwtUtil;
-
-    public List<ApplicationInfoDTO> findApplications(ApplicationInfoDTO filtro){
-        Application application = this.convertToApplication(filtro);
-
-        ExampleMatcher matcher = ExampleMatcher.matching()
-                .withIgnoreCase()
-                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-
-        application.setUser(jwtUtil.getAuthenticatedUser());
-
-        Example criteria = Example.of(application, matcher);
-
-        List<Application> applications = applicationRepository.findAll(criteria);
-
-        return convertToResponseDTO(applications);
+    public ApplicationService(ApplicationRepository applicationRepository,
+                              UserRepository userRepository,
+                              JWTUtil jwtUtil,
+                              ApplicationMapper applicationMapper) {
+        this.applicationRepository = applicationRepository;
+        this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
+        this.applicationMapper = applicationMapper;
     }
 
-    public List<ApplicationInfoDTO> findByUserId(){
+    public List<ApplicationInfoDTO> findByUserId(boolean isActive){
         List<Application> applications = applicationRepository.findByUserId(jwtUtil.getAuthenticatedUser().getId());
 
-        return convertToResponseDTO(applications);
+        applications = applications.stream()
+                                    .filter(a -> a.isActive() == isActive)
+                                    .collect(Collectors.toList());
+
+        return applicationMapper.map(applications);
     }
 
     public Application saveApplication(ApplicationDTO name){
@@ -68,28 +64,5 @@ public class ApplicationService implements ApplicationServiceInterface {
                     applicationRepository.save(a);
                     return a;
                 }).orElseThrow(() -> new ApplicationNotFoundException());
-    }
-
-
-    private List<ApplicationInfoDTO> convertToResponseDTO(List<Application> applicationList){
-        return applicationList.stream()
-                    .map(this::convertToApplicationInformationDTO)
-                    .collect(Collectors.toList());
-    }
-    private Application convertToApplication(ApplicationInfoDTO dto){
-        Application application = new Application();
-            application.setActive(dto.isActive());
-            application.setCreatedAt(dto.getCreatedAt());
-            application.setId(dto.getId());
-        return application;
-    }
-    private ApplicationInfoDTO convertToApplicationInformationDTO(Application application){
-        ApplicationInfoDTO dto = new ApplicationInfoDTO();
-            dto.setId(application.getId());
-            dto.setCreatedAt(application.getCreatedAt());
-            dto.setName(application.getName());
-            dto.setActive(application.isActive());
-
-        return dto;
     }
 }

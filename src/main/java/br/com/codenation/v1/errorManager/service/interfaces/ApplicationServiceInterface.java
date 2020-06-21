@@ -8,9 +8,7 @@ import java.util.List;
 
 public interface ApplicationServiceInterface extends ServiceInterface<Application>{
 
-    List<ApplicationInfoDTO> findApplications(ApplicationInfoDTO filtro);
-
-    List<ApplicationInfoDTO> findByUserId();
+    List<ApplicationInfoDTO> findByUserId(boolean active);
 
     Application saveApplication(ApplicationDTO name);
 

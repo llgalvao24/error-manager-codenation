@@ -6,6 +6,7 @@ import br.com.codenation.v1.errorManager.exception.LevelNotFoundException;
 import br.com.codenation.v1.errorManager.exception.LogNotFoundException;
 import br.com.codenation.v1.errorManager.exception.OwnershipException;
 import br.com.codenation.v1.errorManager.exception.PageableDefinitionException;
+import br.com.codenation.v1.errorManager.exception.TokenNotValidOrNotInformedException;
 import br.com.codenation.v1.errorManager.exception.UserNotFoundException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
@@ -73,5 +74,10 @@ public class ControllersAdvice {
         return new ApiErrors(e.getMessage());
     }
 
+    @ExceptionHandler(TokenNotValidOrNotInformedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiErrors handleTokenNotValidException(TokenNotValidOrNotInformedException e){
+        return new ApiErrors(e.getMessage());
+    }
 
 }
