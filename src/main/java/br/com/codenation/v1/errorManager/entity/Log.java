@@ -44,7 +44,7 @@ public class Log {
     private LocalDateTime updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "appication_id")
+    @JoinColumn(name = "application_id")
     private Application application;
 
     public Log() {
