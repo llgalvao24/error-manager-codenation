@@ -6,8 +6,6 @@ CREATE INDEX IDX_USERS_ID ON USERS (ID);
 CREATE INDEX IDX_USERS_USERNAME ON USERS (USERNAME);
 
 
-<!--criação da trigger para tornar os usuários is_active = false-->
-
 CREATE OR REPLACE FUNCTION update_user_to_false()
   RETURNS trigger AS
 $BODY$
@@ -27,8 +25,6 @@ CREATE TRIGGER TRG_UPDATE_USER_TO_FALSE
   FOR EACH ROW
   EXECUTE PROCEDURE update_user_to_false();
 
-  <!--criação da trigger para deletar os logs ao desativar aplicação-->
-
 CREATE OR REPLACE FUNCTION update_application_to_false()
   RETURNS trigger AS
 $BODY$
@@ -44,6 +40,6 @@ LANGUAGE plpgsql VOLATILE;
 
 CREATE TRIGGER TRG_UPDATE_APPLICATION_TO_FALSE
   BEFORE UPDATE
-  ON USERS
+  ON APPLICATIONS
   FOR EACH ROW
   EXECUTE PROCEDURE update_application_to_false();
