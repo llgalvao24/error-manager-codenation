@@ -1,5 +1,6 @@
 package br.com.codenation.v1.errorManager.service.interfaces;
 
+import br.com.codenation.v1.errorManager.dto.AlteraStatusApplicationDTO;
 import br.com.codenation.v1.errorManager.dto.ApplicationDTO;
 import br.com.codenation.v1.errorManager.dto.ApplicationInfoDTO;
 import br.com.codenation.v1.errorManager.entity.Application;
@@ -12,6 +13,6 @@ public interface ApplicationServiceInterface extends ServiceInterface<Applicatio
 
     Application saveApplication(ApplicationDTO name);
 
-    void deleteApplication(Long id);
+    ApplicationInfoDTO updateActive(Long id, AlteraStatusApplicationDTO dto);
 
 }

@@ -1,5 +1,6 @@
 package br.com.codenation.v1.errorManager.service.impl;
 
+import br.com.codenation.v1.errorManager.dto.AlteraStatusApplicationDTO;
 import br.com.codenation.v1.errorManager.dto.ApplicationDTO;
 import br.com.codenation.v1.errorManager.dto.ApplicationInfoDTO;
 import br.com.codenation.v1.errorManager.entity.Application;
@@ -56,13 +57,13 @@ public class ApplicationService implements ApplicationServiceInterface {
         return applicationRepository.save(application);
     }
 
-    public void deleteApplication(Long id){
-        applicationRepository.findById(id)
-                .map(a -> {
-                    jwtUtil.isAuthorized(a.getUser());
-                    a.setActive(false);
-                    applicationRepository.save(a);
-                    return a;
-                }).orElseThrow(() -> new ApplicationNotFoundException());
+    @Override
+    public ApplicationInfoDTO updateActive(Long id, AlteraStatusApplicationDTO dto) {
+        Application application = applicationRepository.findById(id)
+                .orElseThrow(ApplicationNotFoundException::new);
+        jwtUtil.isAuthorized(application.getUser());
+        application.setActive(dto.isActive());
+
+        return applicationMapper.map(applicationRepository.save(application));
     }
 }
