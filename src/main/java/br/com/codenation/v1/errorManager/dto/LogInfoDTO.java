@@ -3,6 +3,7 @@ package br.com.codenation.v1.errorManager.dto;
 import br.com.codenation.v1.errorManager.enums.Level;
 
 public class LogInfoDTO {
+    
     private Long id;
     private String description;
     private String details;
