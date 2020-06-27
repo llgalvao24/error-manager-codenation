@@ -1,5 +1,6 @@
 package br.com.codenation.v1.errorManager.service.impl;
 
+import br.com.codenation.v1.errorManager.dto.ArquivaLogDTO;
 import br.com.codenation.v1.errorManager.dto.LogDTO;
 import br.com.codenation.v1.errorManager.dto.LogInfoDTO;
 import br.com.codenation.v1.errorManager.entity.Application;
@@ -7,6 +8,7 @@ import br.com.codenation.v1.errorManager.entity.Log;
 import br.com.codenation.v1.errorManager.enums.Level;
 import br.com.codenation.v1.errorManager.exception.ApplicationNotFoundException;
 import br.com.codenation.v1.errorManager.exception.LogNotFoundException;
+import br.com.codenation.v1.errorManager.exception.OwnershipException;
 import br.com.codenation.v1.errorManager.exception.PageableDefinitionException;
 import br.com.codenation.v1.errorManager.mappers.LogMapper;
 import br.com.codenation.v1.errorManager.repository.ApplicationRepository;
@@ -59,7 +61,7 @@ public class LogService implements LogServiceInterface {
   }
 
   @Override
-  public List<LogInfoDTO> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao) {
+  public List<LogInfoDTO> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived) {
 
     if (pagina < 1){
       throw new PageableDefinitionException("Número da página precisa ser maior que 0");
@@ -74,7 +76,7 @@ public class LogService implements LogServiceInterface {
     Sort sort = Sort.by(Sort.Direction.ASC, campoOrdenacao);
     PageRequest pageRequest = PageRequest.of(pagina - 1, tamanhoPagina, sort);
 
-    List<Log> logs = logRepository.findByApplicationUserId(this.jwtUtil.getAuthenticatedUser().getId(), pageRequest);
+    List<Log> logs = logRepository.findByApplicationUserIdAndArchived(this.jwtUtil.getAuthenticatedUser().getId(),archived, pageRequest);
 
     return logMapper.map(logs);
   }
@@ -91,6 +93,30 @@ public class LogService implements LogServiceInterface {
       oldLog.addEvent();
       return logMapper.map(logRepository.save(oldLog));
     }
+
+  }
+
+  @Override
+  public LogInfoDTO archive(Long id, ArquivaLogDTO archived) {
+    Log log = logRepository.findById(id)
+            .orElseThrow(LogNotFoundException::new);
+
+    jwtUtil.isAuthorized(log.getApplication().getUser());
+
+    log.setArchived(archived.isArchived());
+
+    return logMapper.map(logRepository.save(log));
+
+  }
+
+  @Override
+  public void delete(Long id) {
+    Log log = logRepository.findById(id)
+            .orElseThrow(LogNotFoundException::new);
+
+    jwtUtil.isAuthorized(log.getApplication().getUser());
+
+    logRepository.delete(log);
 
   }
 

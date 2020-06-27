@@ -1,5 +1,6 @@
 package br.com.codenation.v1.errorManager.service.interfaces;
 
+import br.com.codenation.v1.errorManager.dto.ArquivaLogDTO;
 import br.com.codenation.v1.errorManager.dto.LogDTO;
 import br.com.codenation.v1.errorManager.dto.LogInfoDTO;
 import br.com.codenation.v1.errorManager.entity.Log;
@@ -12,8 +13,12 @@ public interface LogServiceInterface extends ServiceInterface<Log> {
 
   List<LogInfoDTO> findByApplicationId(Long applicationId);
 
-  List<LogInfoDTO> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao);
+  List<LogInfoDTO> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived);
 
   LogInfoDTO insert(LogDTO log);
+
+  LogInfoDTO archive(Long id, ArquivaLogDTO archived);
+
+  void delete(Long id);
 
 }

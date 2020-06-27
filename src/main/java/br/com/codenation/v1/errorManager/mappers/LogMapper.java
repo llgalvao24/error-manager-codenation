@@ -21,7 +21,8 @@ public interface LogMapper {
             @Mapping(source = "application", target = "application"),
             @Mapping(source = "createdAt", target = "createdAt", dateFormat = "yyyy-MM-dd HH:mm"),
             @Mapping(source = "updatedAt", target = "updatedAt", dateFormat = "yyyy-MM-dd HH:mm"),
-            @Mapping(source = "numberEvents", target = "numberEvents")
+            @Mapping(source = "numberEvents", target = "numberEvents"),
+            @Mapping(source = "archived", target = "archived")
     })
 
     LogInfoDTO map(Log log);

@@ -13,6 +13,7 @@ public class LogInfoDTO {
     private String createdAt;
     private String updatedAt;
     private Long numberEvents;
+    private boolean archived;
 
     public LogInfoDTO(){
     }
@@ -95,5 +96,13 @@ public class LogInfoDTO {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 }

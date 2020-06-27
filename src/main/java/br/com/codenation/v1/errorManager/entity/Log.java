@@ -51,6 +51,9 @@ public class Log {
     @Column(columnDefinition = "INTEGER DEFAULT 1")
     private Long numberEvents;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean archived;
+
     public Log() {
     }
 
@@ -146,6 +149,14 @@ public class Log {
         }else {
             this.numberEvents += 1;
         }
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
     @Override
