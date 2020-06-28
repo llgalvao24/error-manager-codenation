@@ -30,7 +30,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                         .useDefaultResponseMessages(false)
                         .select()
-                        .apis(RequestHandlerSelectors.basePackage("br.com.codenation.v1.errorManager"))
+                        .apis(RequestHandlerSelectors.basePackage("br.com.codenation.v1.errorManager.controller"))
                         .paths(PathSelectors.any())
                         .build()
                         .securityContexts(Arrays.asList(securityContext()))

@@ -2,6 +2,7 @@ package br.com.codenation.v1.errorManager.security;
 
 import br.com.codenation.v1.errorManager.entity.User;
 import br.com.codenation.v1.errorManager.exception.OwnershipException;
+import br.com.codenation.v1.errorManager.exception.TokenNotValidOrNotInformedException;
 import br.com.codenation.v1.errorManager.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -66,6 +67,11 @@ public class JWTUtil {
   }
 
   public User getAuthenticatedUser(){
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    if (username.equals("anonymousUser")){
+      throw new TokenNotValidOrNotInformedException();
+    }
     return userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
   }
 
