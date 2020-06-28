@@ -3,6 +3,7 @@ package br.com.codenation.v1.errorManager.controller;
 import br.com.codenation.v1.errorManager.dto.ArquivaLogDTO;
 import br.com.codenation.v1.errorManager.dto.LogDTO;
 import br.com.codenation.v1.errorManager.dto.LogInfoDTO;
+import br.com.codenation.v1.errorManager.enums.Level;
 import br.com.codenation.v1.errorManager.service.impl.LogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,6 +51,57 @@ public class LogController {
   ){
 
     return logService.findByApplicationUserId(pagina, tamanhoPagina, orderBy, false);
+  }
+
+  @GetMapping("/level/{level}")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiOperation("Busca todos os logs não arquivados do usuário autenticado.")
+  @ApiResponses({
+          @ApiResponse(code=200, message = "Sucesso."),
+          @ApiResponse(code=400, message = "Erro de validação."),
+  })
+  public List<LogInfoDTO> findAllByLevel(
+          @ApiParam("Número da página a ser visualizada.")    @RequestParam(value = "page", defaultValue = "1") Integer pagina,
+          @ApiParam("Quantos logs por página.")    @RequestParam(value = "size", defaultValue = "25") Integer tamanhoPagina,
+          @ApiParam("Por qual campo ordenar.")    @RequestParam(value = "orderby", defaultValue = "id") String orderBy,
+          @ApiParam("Level a ser usado como parâmetro") @PathVariable Level level
+  ){
+
+    return logService.findByApplicationUserIdAndLevel(pagina, tamanhoPagina, orderBy, false, level);
+  }
+
+  @GetMapping("/description/{description}")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiOperation("Busca todos os logs não arquivados do usuário autenticado.")
+  @ApiResponses({
+          @ApiResponse(code=200, message = "Sucesso."),
+          @ApiResponse(code=400, message = "Erro de validação."),
+  })
+  public List<LogInfoDTO> findAllByDescription(
+          @ApiParam("Número da página a ser visualizada.")    @RequestParam(value = "page", defaultValue = "1") Integer pagina,
+          @ApiParam("Quantos logs por página.")    @RequestParam(value = "size", defaultValue = "25") Integer tamanhoPagina,
+          @ApiParam("Por qual campo ordenar.")    @RequestParam(value = "orderby", defaultValue = "id") String orderBy,
+          @ApiParam("Descrição a ser usado como parâmetro para consulta") @PathVariable String description
+  ){
+
+    return logService.findByApplicationUserIdAndDescription(pagina, tamanhoPagina, orderBy, false, description);
+  }
+
+  @GetMapping("/origin/{origin}")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiOperation("Busca todos os logs não arquivados do usuário autenticado.")
+  @ApiResponses({
+          @ApiResponse(code=200, message = "Sucesso."),
+          @ApiResponse(code=400, message = "Erro de validação."),
+  })
+  public List<LogInfoDTO> findAllByOrigin(
+          @ApiParam("Número da página a ser visualizada.")    @RequestParam(value = "page", defaultValue = "1") Integer pagina,
+          @ApiParam("Quantos logs por página.")    @RequestParam(value = "size", defaultValue = "25") Integer tamanhoPagina,
+          @ApiParam("Por qual campo ordenar.")    @RequestParam(value = "orderby", defaultValue = "id") String orderBy,
+          @ApiParam("Origem a ser usado como parâmetro para consulta") @PathVariable String origin
+  ){
+
+    return logService.findByApplicationUserIdAndOrigin(pagina, tamanhoPagina, orderBy, false, origin);
   }
 
   @GetMapping("/archived")

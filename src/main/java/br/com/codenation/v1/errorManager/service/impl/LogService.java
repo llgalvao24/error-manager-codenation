@@ -63,6 +63,46 @@ public class LogService implements LogServiceInterface {
   @Override
   public List<LogInfoDTO> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived) {
 
+    PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
+
+    List<Log> logs = logRepository.findByApplicationUserIdAndArchived(this.jwtUtil.getAuthenticatedUser().getId(),archived, pageRequest);
+
+    return logMapper.map(logs);
+  }
+
+  @Override
+  public List<LogInfoDTO> findByApplicationUserIdAndLevel(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived, Level level) {
+    PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
+
+    List<Log> logs = logRepository.findByApplicationUserIdAnAndLevel(this.jwtUtil.getAuthenticatedUser().getId(),
+                                                                      level.getCode(), pageRequest);
+
+    return logMapper.map(logs);
+  }
+
+  @Override
+  public List<LogInfoDTO> findByApplicationUserIdAndDescription(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived, String description) {
+    PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
+
+    List<Log> logs = logRepository.findByApplicationUserIdAnAndDescription(this.jwtUtil.getAuthenticatedUser().getId(),
+                                                                            description,
+                                                                            pageRequest);
+
+    return logMapper.map(logs);
+  }
+
+  @Override
+  public List<LogInfoDTO> findByApplicationUserIdAndOrigin(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived, String origin) {
+    PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
+
+    List<Log> logs = logRepository.findByApplicationUserIdAnAndOrigin(this.jwtUtil.getAuthenticatedUser().getId(),
+                                                                      origin,
+                                                                      pageRequest);
+
+    return logMapper.map(logs);
+  }
+
+  private PageRequest createPageable(Integer pagina, Integer tamanhoPagina, String campoOrdenacao){
     if (pagina < 1){
       throw new PageableDefinitionException("Número da página precisa ser maior que 0");
     }
@@ -74,11 +114,8 @@ public class LogService implements LogServiceInterface {
     }
 
     Sort sort = Sort.by(Sort.Direction.ASC, campoOrdenacao);
-    PageRequest pageRequest = PageRequest.of(pagina - 1, tamanhoPagina, sort);
 
-    List<Log> logs = logRepository.findByApplicationUserIdAndArchived(this.jwtUtil.getAuthenticatedUser().getId(),archived, pageRequest);
-
-    return logMapper.map(logs);
+    return PageRequest.of(pagina - 1, tamanhoPagina, sort);
   }
 
   @Override
