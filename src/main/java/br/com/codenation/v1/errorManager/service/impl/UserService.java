@@ -6,6 +6,7 @@ import br.com.codenation.v1.errorManager.exception.UserNotFoundException;
 import br.com.codenation.v1.errorManager.mappers.UserMapper;
 import br.com.codenation.v1.errorManager.repository.UserRepository;
 import br.com.codenation.v1.errorManager.dto.UserDTO;
+import br.com.codenation.v1.errorManager.security.JWTUtil;
 import br.com.codenation.v1.errorManager.service.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,12 +20,14 @@ public class UserService implements UserServiceInterface {
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final UserMapper userMapper;
+  private final JWTUtil jwtUtil;
 
   @Autowired
-  public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper) {
+  public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper, JWTUtil jwtUtil) {
     this.userRepository = userRepository;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     this.userMapper = userMapper;
+    this.jwtUtil = jwtUtil;
   }
 
   public User findById(Long id) {
@@ -44,12 +47,14 @@ public class UserService implements UserServiceInterface {
     return userMapper.map(users);
   }
 
-  public User inset(UserDTO userDTO){
+  public User insert(UserDTO userDTO){
     return userRepository.save(fromDTO(userDTO));
   }
 
   public void delete(Long id){
+
     userRepository.findById(id).map(u -> {
+      jwtUtil.isAuthorized(u);
       u.setActive(false);
       userRepository.save(u);
       return u;
@@ -60,6 +65,7 @@ public class UserService implements UserServiceInterface {
     userDTO.setId(id);
     User user = fromDTOUpdate(userDTO);
     User newUser = findById(user.getId());
+    jwtUtil.isAuthorized(newUser);
     updateData(newUser, user);
     return userRepository.save(newUser);
   }
