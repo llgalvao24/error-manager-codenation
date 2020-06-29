@@ -8,7 +8,6 @@ import br.com.codenation.v1.errorManager.entity.Log;
 import br.com.codenation.v1.errorManager.enums.Level;
 import br.com.codenation.v1.errorManager.exception.ApplicationNotFoundException;
 import br.com.codenation.v1.errorManager.exception.LogNotFoundException;
-import br.com.codenation.v1.errorManager.exception.OwnershipException;
 import br.com.codenation.v1.errorManager.exception.PageableDefinitionException;
 import br.com.codenation.v1.errorManager.mappers.LogMapper;
 import br.com.codenation.v1.errorManager.repository.ApplicationRepository;
@@ -74,7 +73,7 @@ public class LogService implements LogServiceInterface {
   public List<LogInfoDTO> findByApplicationUserIdAndLevel(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived, Level level) {
     PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
 
-    List<Log> logs = logRepository.findByApplicationUserIdAnAndLevel(this.jwtUtil.getAuthenticatedUser().getId(),
+    List<Log> logs = logRepository.findByApplicationUserIdAndLevel(this.jwtUtil.getAuthenticatedUser().getId(),
                                                                       level.getCode(), pageRequest);
 
     return logMapper.map(logs);
@@ -84,7 +83,7 @@ public class LogService implements LogServiceInterface {
   public List<LogInfoDTO> findByApplicationUserIdAndDescription(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived, String description) {
     PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
 
-    List<Log> logs = logRepository.findByApplicationUserIdAnAndDescription(this.jwtUtil.getAuthenticatedUser().getId(),
+    List<Log> logs = logRepository.findByApplicationUserIdAndDescription(this.jwtUtil.getAuthenticatedUser().getId(),
                                                                             description,
                                                                             pageRequest);
 
@@ -95,7 +94,7 @@ public class LogService implements LogServiceInterface {
   public List<LogInfoDTO> findByApplicationUserIdAndOrigin(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived, String origin) {
     PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
 
-    List<Log> logs = logRepository.findByApplicationUserIdAnAndOrigin(this.jwtUtil.getAuthenticatedUser().getId(),
+    List<Log> logs = logRepository.findByApplicationUserIdAndOrigin(this.jwtUtil.getAuthenticatedUser().getId(),
                                                                       origin,
                                                                       pageRequest);
 

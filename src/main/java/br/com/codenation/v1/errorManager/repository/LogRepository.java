@@ -30,9 +30,9 @@ public interface LogRepository extends JpaRepository<Log, Long> {
           String origin
   );
 
-  List<Log> findByApplicationUserIdAnAndLevel(Long userId, Integer level, Pageable pageable);
+  List<Log> findByApplicationUserIdAndLevel(Long userId, Integer level, Pageable pageable);
 
-  List<Log> findByApplicationUserIdAnAndDescription(Long userId, String description, Pageable pageable);
+  List<Log> findByApplicationUserIdAndDescription(Long userId, String description, Pageable pageable);
 
-  List<Log> findByApplicationUserIdAnAndOrigin(Long userId, String origin, Pageable pageable);
+  List<Log> findByApplicationUserIdAndOrigin(Long userId, String origin, Pageable pageable);
 }
