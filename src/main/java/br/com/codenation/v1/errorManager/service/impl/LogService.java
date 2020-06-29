@@ -132,20 +132,6 @@ public class LogService implements LogServiceInterface {
     }
 
   }
-
-  @Override
-  public LogInfoDTO insert(LogDTO log) {
-    Log newLog = fromDTO(log);
-    Log oldLog = findLogIfExists(newLog);
-
-    if (oldLog == null) {
-      newLog.addEvent();
-      return logMapper.map(logRepository.save(newLog));
-    }else{
-      oldLog.addEvent();
-      return logMapper.map(logRepository.save(oldLog));
-    }
-  }
   
   @Override
   public LogInfoDTO archive(Long id, ArquivaLogDTO archived) {
