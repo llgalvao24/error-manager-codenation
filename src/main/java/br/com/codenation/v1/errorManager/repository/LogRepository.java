@@ -34,4 +34,5 @@ public interface LogRepository extends JpaRepository<Log, Long> {
   List<Log> findByApplicationUserIdAnAndDescription(Long userId, String description, Pageable pageable);
 
   List<Log> findByApplicationUserIdAnAndOrigin(Long userId, String origin, Pageable pageable);
+
 }
