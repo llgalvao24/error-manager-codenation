@@ -2,6 +2,7 @@ package br.com.codenation.v1.errorManager.repository;
 
 import br.com.codenation.v1.errorManager.entity.Application;
 import br.com.codenation.v1.errorManager.entity.Log;
+import br.com.codenation.v1.errorManager.enums.Level;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,14 +17,22 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 
   List<Log> findLogByApplicationId(Long applicationId);
 
-  List<Log> findByApplicationUserId(Long userId, Pageable pageable);
+  List<Log> findByApplicationUserIdAndArchived(Long userId, boolean archived, Pageable pageable);
 
-  List<Log> findByApplicationUserIdAndLevel(Long userId, Pageable pageable);
+  Log findByLevelAndDescriptionAndDetailsAndEnvironmentAndLogAndApplicationIdAndApplicationUserId(
+          Integer level,
+          String description,
+          String details,
+          String environment,
+          String log,
+          Long applicationId,
+          Long userId
+  );
 
-  List<Log> findByApplicationUserIdAndDescription(Long userId, Pageable pageable);
+  List<Log> findByApplicationUserIdAnAndLevel(Long userId, Integer level, Pageable pageable);
 
-  List<Log> findByApplicationUserIdAndOrigin(Long userId, Pageable pageable);
+  List<Log> findByApplicationUserIdAnAndDescription(Long userId, String description, Pageable pageable);
 
-
+  List<Log> findByApplicationUserIdAnAndOrigin(Long userId, String origin, Pageable pageable);
 
 }

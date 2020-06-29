@@ -55,6 +55,7 @@ public class DBService {
             Level.WARNING,
             app1,
             "PRODUÇÃO");
+    log1.addEvent();
 
     Log log2 = new Log(null,
             "Segundo Erro Teste App 2",
@@ -63,6 +64,7 @@ public class DBService {
             Level.ERROR,
             app2,
             "PRODUÇÃO");
+    log2.addEvent();
 
     Log log3 = new Log(null,
             "Erro Teste App 2",
@@ -71,6 +73,7 @@ public class DBService {
             Level.WARNING,
             app2,
             "HOMOLOGAÇÃO");
+    log3.addEvent();
 
     Log log4 = new Log(null,
             "Segundo Erro Teste App 1",
@@ -79,6 +82,7 @@ public class DBService {
             Level.INFO,
             app1,
             "TESTE");
+    log4.addEvent();
 
     logRepository.save(log1);
     logRepository.save(log2);

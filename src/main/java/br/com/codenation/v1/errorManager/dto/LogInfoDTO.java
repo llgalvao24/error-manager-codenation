@@ -2,16 +2,28 @@ package br.com.codenation.v1.errorManager.dto;
 
 import br.com.codenation.v1.errorManager.enums.Level;
 
-public class LogDTO {
-
+public class LogInfoDTO {
+    private Long id;
     private String description;
     private String details;
     private String log;
     private String environment;
     private Integer level;
     private ApplicationDTO application;
+    private String createdAt;
+    private String updatedAt;
+    private Long numberEvents;
+    private boolean archived;
 
-    public LogDTO(){
+    public LogInfoDTO(){
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -62,4 +74,35 @@ public class LogDTO {
         this.application = application;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Long getNumberEvents() {
+        return numberEvents;
+    }
+
+    public void setNumberEvents(Long numberEvents) {
+        this.numberEvents = numberEvents;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
 }
