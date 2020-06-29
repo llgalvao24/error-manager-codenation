@@ -37,6 +37,10 @@ public class Log {
     @NotNull
     private Integer level;
 
+    @Column
+    @NotNull
+    private String origin;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -130,6 +134,14 @@ public class Log {
 
     public void setApplication(Application application) {
         this.application = application;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
     }
 
     @Override
