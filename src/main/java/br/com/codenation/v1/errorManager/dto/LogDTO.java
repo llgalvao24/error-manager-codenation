@@ -10,6 +10,7 @@ public class LogDTO {
     private String environment;
     private Integer level;
     private ApplicationDTO application;
+    private String origin;
 
     public LogDTO(){
     }
@@ -62,4 +63,11 @@ public class LogDTO {
         this.application = application;
     }
 
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
 }

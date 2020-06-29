@@ -173,14 +173,15 @@ public class LogService implements LogServiceInterface {
   }
 
   private Log findLogIfExists(Log log){
-    return  logRepository.findByLevelAndDescriptionAndDetailsAndEnvironmentAndLogAndApplicationIdAndApplicationUserId(
+    return  logRepository.findByLevelAndDescriptionAndDetailsAndEnvironmentAndLogAndApplicationIdAndApplicationUserIdAndOrigin(
             log.getLevel().getCode(),
             log.getDescription(),
             log.getDetails(),
             log.getEnvironment(),
             log.getLog(),
             log.getApplication().getId(),
-            log.getApplication().getUser().getId()
+            log.getApplication().getUser().getId(),
+            log.getOrigin()
     );
   }
 
