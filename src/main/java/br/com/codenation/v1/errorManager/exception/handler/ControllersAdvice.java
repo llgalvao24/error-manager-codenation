@@ -10,12 +10,15 @@ import br.com.codenation.v1.errorManager.exception.TokenNotValidOrNotInformedExc
 import br.com.codenation.v1.errorManager.exception.UserNotFoundException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ControllersAdvice {
@@ -47,7 +50,11 @@ public class ControllersAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrors handleMethodArgumentNotValidException( MethodArgumentNotValidException e){
-        return new ApiErrors(e.getMessage());
+        return new ApiErrors(e.getBindingResult()
+                                .getFieldErrors()
+                                .stream()
+                                .map(fieldError -> fieldError.getDefaultMessage())
+                                .collect(Collectors.toList()));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -74,6 +81,18 @@ public class ControllersAdvice {
         return new ApiErrors(e.getMessage());
     }
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleHttpRequestMethodNotSupportedException( HttpRequestMethodNotSupportedException e){
+        return new ApiErrors(e.getSupportedHttpMethods(), e.getMethod(), e.getMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
+         return new ApiErrors(e.getMessage());
+    }
+  
     @ExceptionHandler(TokenNotValidOrNotInformedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiErrors handleTokenNotValidException(TokenNotValidOrNotInformedException e){

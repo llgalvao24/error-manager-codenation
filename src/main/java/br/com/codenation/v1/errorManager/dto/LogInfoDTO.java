@@ -3,7 +3,7 @@ package br.com.codenation.v1.errorManager.dto;
 import br.com.codenation.v1.errorManager.enums.Level;
 
 public class LogInfoDTO {
-    
+
     private Long id;
     private String description;
     private String details;
@@ -14,6 +14,7 @@ public class LogInfoDTO {
     private String createdAt;
     private String updatedAt;
     private Long numberEvents;
+    private boolean archived;
 
     public LogInfoDTO(){
     }
@@ -97,4 +98,13 @@ public class LogInfoDTO {
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
 }

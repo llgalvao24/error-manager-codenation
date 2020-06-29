@@ -65,7 +65,7 @@ public class UserController {
       @ApiResponse(code = 400, message = "Erro de validação.")
   })
   public User insert(@Valid @RequestBody UserDTO userDTO){
-    return userService.inset(userDTO);
+    return userService.insert(userDTO);
   }
 
   @PutMapping("/user/{id}")
@@ -78,8 +78,7 @@ public class UserController {
     userService.update(userDTO, id);
   }
 
-  @PreAuthorize("hasAnyRole('ADMIN')")
-  @DeleteMapping("/uder/{id}")
+  @DeleteMapping("/user/{id}")
   @ApiOperation("Desativa um usuário com base no id")
   @ApiResponses({
       @ApiResponse( code = 404, message = "Not found." )

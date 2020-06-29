@@ -17,7 +17,23 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 
   List<Log> findLogByApplicationId(Long applicationId);
 
-  List<Log> findByApplicationUserId(Long userId, Pageable pageable);
+  List<Log> findByApplicationUserIdAndArchived(Long userId, boolean archived, Pageable pageable);
+
+  Log findByLevelAndDescriptionAndDetailsAndEnvironmentAndLogAndApplicationIdAndApplicationUserId(
+          Integer level,
+          String description,
+          String details,
+          String environment,
+          String log,
+          Long applicationId,
+          Long userId
+  );
+
+  List<Log> findByApplicationUserIdAnAndLevel(Long userId, Integer level, Pageable pageable);
+
+  List<Log> findByApplicationUserIdAnAndDescription(Long userId, String description, Pageable pageable);
+
+  List<Log> findByApplicationUserIdAnAndOrigin(Long userId, String origin, Pageable pageable);
 
   Log findByLevelAndDescriptionAndDetailsAndEnvironmentAndLogAndApplicationIdAndApplicationUserId(
           Integer level,
