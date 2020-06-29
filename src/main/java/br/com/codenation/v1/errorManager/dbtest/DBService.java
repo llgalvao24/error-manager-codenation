@@ -35,7 +35,7 @@ public class DBService {
 
   public void instantiateTestDatabase() {
 
-    User user1 = new User(null, "admin@admin.com", passwordEncoder.encode("admin"));
+    User user1 = new User(null, "admin1@admin.com", passwordEncoder.encode("admin"));
     user1.addProfile(Profile.ADMIN);
     userRepository.save(user1);
 
