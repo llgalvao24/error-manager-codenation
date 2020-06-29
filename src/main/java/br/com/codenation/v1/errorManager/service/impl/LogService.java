@@ -132,7 +132,7 @@ public class LogService implements LogServiceInterface {
     }
 
   }
-
+  
   @Override
   public LogInfoDTO archive(Long id, ArquivaLogDTO archived) {
     Log log = logRepository.findById(id)
@@ -143,7 +143,6 @@ public class LogService implements LogServiceInterface {
     log.setArchived(archived.isArchived());
 
     return logMapper.map(logRepository.save(log));
-
   }
 
   @Override

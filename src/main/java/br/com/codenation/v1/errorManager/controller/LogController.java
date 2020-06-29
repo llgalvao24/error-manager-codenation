@@ -175,6 +175,6 @@ public class LogController {
           @ApiResponse(code = 403, message = "Token inválido ou não informado.")
   })
   public void delete(@PathVariable Long id){
-    logService.delete(id);
+    logService.delete(id); 
   }
 }
