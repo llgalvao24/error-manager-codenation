@@ -35,7 +35,7 @@ public class DBService {
 
   public void instantiateTestDatabase() {
 
-    User user1 = new User(null, "admin1@admin.com", passwordEncoder.encode("admin"));
+    User user1 = new User(null, "admin@admin.com", passwordEncoder.encode("admin"));
     user1.addProfile(Profile.ADMIN);
     userRepository.save(user1);
 
@@ -48,40 +48,51 @@ public class DBService {
     Application app2 = new Application(null, "app2", user2);
     appRepository.save(app2);
 
-    Log log1 = new Log(null,
+    Log log1 = new Log(
+            null,
             "Erro Teste App 1",
             "Erro salvo no momento da criação como teste",
             "NullPointerException",
+            "PRODUCTION",
             Level.WARNING,
-            app1,
-            "PRODUÇÃO");
+            "origin1",
+            app1
+    );
     log1.addEvent();
 
-    Log log2 = new Log(null,
+    Log log2 = new Log(
+            null,
             "Segundo Erro Teste App 2",
             "Erro salvo no momento da criação como teste para avaliar o comportamento",
             "ApplicationNotFoundException",
+            "PRODUCTION",
             Level.ERROR,
-            app2,
-            "PRODUÇÃO");
+            "origin2",
+            app2
+    );
     log2.addEvent();
 
     Log log3 = new Log(null,
             "Erro Teste App 2",
             "Erro salvo no momento da criação como teste",
             "NullPointerException",
+            "HOMOLOGAÇÃO",
             Level.WARNING,
-            app2,
-            "HOMOLOGAÇÃO");
+            "origin3",
+            app2
+    );
     log3.addEvent();
 
-    Log log4 = new Log(null,
+    Log log4 = new Log(
+            null,
             "Segundo Erro Teste App 1",
             "Erro salvo no momento da criação como teste para avaliar o comportamento",
             "ApplicationNotFoundException",
+            "TEST",
             Level.INFO,
-            app1,
-            "TESTE");
+            "origin4",
+            app1
+    );
     log4.addEvent();
 
     logRepository.save(log1);

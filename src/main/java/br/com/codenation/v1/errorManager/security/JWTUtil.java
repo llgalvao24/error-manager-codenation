@@ -77,7 +77,7 @@ public class JWTUtil {
 
   public void isAuthorized(User user){
     User authenticatedUser = this.getAuthenticatedUser();
-    if (user.getId() != authenticatedUser.getId()){
+    if (!user.getId().equals(authenticatedUser.getId())){
       throw new OwnershipException();
     }
   }
