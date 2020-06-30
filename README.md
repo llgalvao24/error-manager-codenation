@@ -35,11 +35,11 @@ Banco de dados utilizado para persistência de dados da API.
 
 ### Link API
 Link da API hospedada no Heroku.
-* [Error Manager API](https://www.heroku.com/)
+* [Error Manager API](http://error-manager-codenation.herokuapp.com/)
 
 ### Documentação
 Documentação da API.
-* [Documentação (incluir link pós finalização)](https://www.google.com/)
+* [Documentação](http://error-manager-codenation.herokuapp.com/swagger-ui.html)
 
 ### Slides
 Slides utilizados durante a apresentação.
