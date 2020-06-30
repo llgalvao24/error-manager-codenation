@@ -165,9 +165,10 @@ public class LogService implements LogServiceInterface {
             dto.getDescription(),
             dto.getDetails(),
             dto.getLog(),
+            dto.getEnvironment(),
             Level.toEnum(dto.getLevel().getCode()),
-            application,
-            dto.getEnvironment()
+            dto.getOrigin(),
+            application
     );
   }
 

@@ -70,21 +70,23 @@ public class Log {
     }
 
     public Log(
-        Long id,
-        String description,
-        String details,
-        String log,
-        Level level,
-        Application application,
-        String environment
+            Long id,
+            String description,
+            String details,
+            String log,
+            String environment,
+            Level level,
+            String origin,
+            Application application
     ) {
         this.id = id;
         this.description = description;
         this.details = details;
         this.log = log;
-        this.level = level.getCode();
-        this.application = application;
         this.environment = environment;
+        this.level = level.getCode();
+        this.origin = origin;
+        this.application = application;
     }
 
     public Long getId() {
