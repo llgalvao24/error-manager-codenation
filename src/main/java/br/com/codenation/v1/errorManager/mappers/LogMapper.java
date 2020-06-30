@@ -16,6 +16,7 @@ public interface LogMapper {
             @Mapping(source = "description", target = "description"),
             @Mapping(source = "details", target = "details"),
             @Mapping(source = "log", target = "log"),
+            @Mapping(source = "origin", target = "origin"),
             @Mapping(source = "environment", target = "environment"),
             @Mapping(source = "level", target = "level"),
             @Mapping(source = "application", target = "application"),

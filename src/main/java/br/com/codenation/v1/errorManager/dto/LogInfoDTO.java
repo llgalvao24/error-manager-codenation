@@ -15,6 +15,7 @@ public class LogInfoDTO {
     private String updatedAt;
     private Long numberEvents;
     private boolean archived;
+    private String origin;
 
     public LogInfoDTO(){
     }
@@ -107,4 +108,11 @@ public class LogInfoDTO {
         this.archived = archived;
     }
 
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
 }
