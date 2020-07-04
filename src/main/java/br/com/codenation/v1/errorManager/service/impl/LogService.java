@@ -62,7 +62,7 @@ public class LogService implements LogServiceInterface {
   @Override
   public List<LogInfoDTO> findByApplicationUserId(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived) {
 
-    PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
+    PageRequest pageRequest = createPageable(pagina, tamanhoPagina, campoOrdenacao);
 
     List<Log> logs = logRepository.findByApplicationUserIdAndArchived(this.jwtUtil.getAuthenticatedUser().getId(),archived, pageRequest);
 
@@ -71,7 +71,7 @@ public class LogService implements LogServiceInterface {
 
   @Override
   public List<LogInfoDTO> findByApplicationUserIdAndLevel(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived, Level level) {
-    PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
+    PageRequest pageRequest = createPageable(pagina, tamanhoPagina, campoOrdenacao);
 
     List<Log> logs = logRepository.findByApplicationUserIdAndLevel(this.jwtUtil.getAuthenticatedUser().getId(),
                                                                       level.getCode(), pageRequest);
@@ -81,7 +81,7 @@ public class LogService implements LogServiceInterface {
 
   @Override
   public List<LogInfoDTO> findByApplicationUserIdAndDescription(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived, String description) {
-    PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
+    PageRequest pageRequest = createPageable(pagina, tamanhoPagina, campoOrdenacao);
 
     List<Log> logs = logRepository.findByApplicationUserIdAndDescription(this.jwtUtil.getAuthenticatedUser().getId(),
                                                                             description,
@@ -92,7 +92,7 @@ public class LogService implements LogServiceInterface {
 
   @Override
   public List<LogInfoDTO> findByApplicationUserIdAndOrigin(Integer pagina, Integer tamanhoPagina, String campoOrdenacao, boolean archived, String origin) {
-    PageRequest pageRequest = createPageable(pagina - 1, tamanhoPagina, campoOrdenacao);
+    PageRequest pageRequest = createPageable(pagina, tamanhoPagina, campoOrdenacao);
 
     List<Log> logs = logRepository.findByApplicationUserIdAndOrigin(this.jwtUtil.getAuthenticatedUser().getId(),
                                                                       origin,
